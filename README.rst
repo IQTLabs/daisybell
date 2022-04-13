@@ -18,7 +18,7 @@ Run it in this manner (currently supports models from HuggingFace's repository):
 
 ::
 
-    aiscan --huggingface roberta
+    aiscan --huggingface roberta-base
 
 
 If it is a masking model, it will have output. That's it for now. More will come.
