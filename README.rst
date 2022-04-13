@@ -20,6 +20,12 @@ Run it in this manner (currently supports models from HuggingFace's repository):
 
     aiscan --huggingface roberta-base --task fill-mask
 
+Here is another example with a different bias task.
+
+::
+
+    aiscan --huggingface cross-encoder/nli-distilroberta-base --task zero-shot-classification
+
 That's it for now. More will come.
 
 
