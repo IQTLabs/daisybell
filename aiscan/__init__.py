@@ -46,9 +46,6 @@ def scan(model: Pipeline) -> Generator:
     description="Scanning for ethnic and gender bias in NLP masking models.",
 )
 class MaskingBias:
-    def __init__(self):
-        pass
-
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "fill-mask"
