@@ -50,7 +50,10 @@ class MaskingBias:
         pass
 
     def can_scan(self, model: Pipeline) -> bool:
-        return model.task == "fill-mask"
+        try:
+            return model.task == "fill-mask"
+        except:
+            return False
 
     def scan(self, model: Pipeline) -> dict:
         return {
