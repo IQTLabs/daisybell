@@ -11,7 +11,7 @@ setup(
     keywords="machine_learning artificial_intelligence",
     author="JJ Ben-Joseph",
     author_email="jbenjoseph@iqt.org",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     url="https://github.com/IQTLabs/aiscan",
     license="Apache",
     classifiers=[
