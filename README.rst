@@ -18,10 +18,9 @@ Run it in this manner (currently supports models from HuggingFace's repository):
 
 ::
 
-    aiscan --huggingface roberta-base
+    aiscan --huggingface roberta-base --task fill-mask
 
-
-If it is a masking model, it will have output. That's it for now. More will come.
+That's it for now. More will come.
 
 
 Future Work

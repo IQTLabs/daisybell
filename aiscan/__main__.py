@@ -12,8 +12,9 @@ def main():
     parser.add_argument(
         "--huggingface", action="store", help="name of HuggingFace model to scan"
     )
+    parser.add_argument("--task", action="store", help="what HuggingFace task to try")
     args = parser.parse_args()
-    if args.huggingface:
-        mask = pipeline("fill-mask", model="roberta-base")
+    if args.huggingface and args.task:
+        mask = pipeline(args.task, model=args.huggingface)
         print(f"Scanning on {args.huggingface}")
         print(list(scan(mask)))
