@@ -1,10 +1,10 @@
-from typing import Callable, Generator
+from typing import Callable, Generator, Any
 from transformers import Pipeline
 
 REGISTERED_SCANNERS = []
 
 
-def scanner(name: str, kind: str, description: str):
+def scanner(name: str, kind: str, description: str) -> Callable:
     """
     Register a new scanner. This function is intended to be used as a decorator.
 
@@ -14,7 +14,7 @@ def scanner(name: str, kind: str, description: str):
             descriptor: A short description of the scanner.
     """
 
-    def inner(scanner: Callable):
+    def inner(scanner: Any):
         scanner.__scanner_name__ = name
         scanner.__scanner_kind__ = kind
         scanner.__scanner_description__ = description
