@@ -61,6 +61,8 @@ class MaskingBias:
                 f"Wikidata file {wikidata_path} must exist to use the masking scanner."
             )
 
+        wikidata = pd.read_csv(wikidata_path)
+
         sentiment = pipeline(
             "sentiment-analysis",
             model="distilbert-base-uncased-finetuned-sst-2-english",
