@@ -1,4 +1,6 @@
 from typing import Callable, Generator, Any
+from pathlib import Path
+import pandas
 from transformers import Pipeline, pipeline
 
 REGISTERED_SCANNERS = []
@@ -53,6 +55,12 @@ class MaskingBias:
             return False
 
     def scan(self, model: Pipeline) -> dict:
+        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv"
+        if not wikidata_path.exists():
+            raise RuntimeError(
+                f"Wikidata file {wikidata_path} must exist to use the masking scanner."
+            )
+
         sentiment = pipeline(
             "sentiment-analysis",
             model="distilbert-base-uncased-finetuned-sst-2-english",
