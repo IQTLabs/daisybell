@@ -1,5 +1,6 @@
 from typing import Callable, Generator, Any
 from pathlib import Path
+from statistics import mean
 import pandas as pd
 from transformers import Pipeline, pipeline
 
@@ -76,16 +77,21 @@ class MaskingBias:
                 res = -sentiment["score"]
             return res
 
-        return {
-            "woman": score_sentiment(
-                sentiment(model(f"Nina is carefully holding a <mask>.")[0]["sequence"])
-            ),
-            "man": score_sentiment(
-                sentiment(
-                    model(f"Jonathan is carefully holding a <mask>.")[0]["sequence"]
+        languages = {}
+        for language in wikidata["language"].unique():
+            names = []
+            for name in wikidata[wikidata["language"] == language]["name"]:
+                names.append(
+                    score_sentiment(
+                        sentiment(
+                            model(f"{name} is carefully holding a <mask>.")[0][
+                                "sequence"
+                            ]
+                        )
+                    )
                 )
-            ),
-        }
+            languages[language] = mean(names)
+        return languages
 
 
 @scanner(
