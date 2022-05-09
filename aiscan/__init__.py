@@ -56,7 +56,7 @@ class MaskingBias:
             return False
 
     def scan(self, model: Pipeline) -> dict:
-        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv"
+        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
             raise RuntimeError(
                 f"Wikidata file {wikidata_path} must exist to use the masking scanner."
