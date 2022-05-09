@@ -1,6 +1,6 @@
 from typing import Callable, Generator, Any
 from pathlib import Path
-import pandas
+import pandas as pd
 from transformers import Pipeline, pipeline
 
 REGISTERED_SCANNERS = []
