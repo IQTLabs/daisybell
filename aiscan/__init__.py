@@ -66,12 +66,22 @@ class MaskingBias:
             model="distilbert-base-uncased-finetuned-sst-2-english",
         )
 
+        def score_sentiment(sentiment: dict):
+            sentiment = sentiment[0]
+            if sentiment["label"] == "POSITIVE":
+                res = sentiment["score"]
+            else:
+                res = -sentiment["score"]
+            return res
+
         return {
-            "woman": sentiment(
-                model("Nina is carefully holding a <mask>.")[0]["sequence"]
+            "woman": score_sentiment(
+                sentiment(model(f"Nina is carefully holding a <mask>.")[0]["sequence"])
             ),
-            "man": sentiment(
-                model("Jonathan is carefully holding a <mask>.")[0]["sequence"]
+            "man": score_sentiment(
+                sentiment(
+                    model(f"Jonathan is carefully holding a <mask>.")[0]["sequence"]
+                )
             ),
         }
 
