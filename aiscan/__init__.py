@@ -26,7 +26,7 @@ def scanner(name: str, kind: str, description: str) -> Callable:
     return inner
 
 
-def scan(model: Pipeline) -> Generator:
+def scan(model: Pipeline, params: dict = {}) -> Generator:
     """
     Scans a model for problems.
 
@@ -39,7 +39,7 @@ def scan(model: Pipeline) -> Generator:
     for scanner in REGISTERED_SCANNERS:
         if scanner.can_scan(model):
             yield scanner.__scanner_name__, scanner.__scanner_kind__, scanner.__scanner_description__, scanner.scan(
-                model
+                model, params
             )
 
 
@@ -55,7 +55,7 @@ class MaskingBias:
         except:
             return False
 
-    def scan(self, model: Pipeline) -> dict:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
             raise RuntimeError(
