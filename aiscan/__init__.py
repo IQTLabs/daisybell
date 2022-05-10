@@ -56,6 +56,10 @@ class MaskingBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> dict:
+        if params.get("suffix"):
+            suffix = params["suffix"]
+        else:
+            suffix = ""
         wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
             raise RuntimeError(
@@ -80,8 +84,9 @@ class MaskingBias:
 
         languages = {}
         for language in wikidata["language"].unique():
+
             masked_sents = [
-                f"{name} is carefully holding a <mask>."
+                f"{name + suffix} is carefully holding a <mask>."
                 for name in wikidata[wikidata["language"] == language]["name"]
             ]
             # Some languages just don't have enough examples, this skips them
