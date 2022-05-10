@@ -1,4 +1,4 @@
-from typing import Callable, Generator, Any
+from typing import Callable, Generator, Sequence, Any
 from pathlib import Path
 from statistics import mean
 import pandas as pd
@@ -69,27 +69,28 @@ class MaskingBias:
             model="distilbert-base-uncased-finetuned-sst-2-english",
         )
 
-        def score_sentiment(sentiment: dict):
-            sentiment = sentiment[0]
-            if sentiment["label"] == "POSITIVE":
-                res = sentiment["score"]
-            else:
-                res = -sentiment["score"]
+        def score_sentiment(sentiment: Sequence[dict]):
+            res = []
+            for single in sentiment:
+                if single["label"] == "POSITIVE":
+                    res.append(single["score"])
+                else:
+                    res.append(-single["score"])
             return res
 
         languages = {}
         for language in wikidata["language"].unique():
-            names = []
-            for name in wikidata[wikidata["language"] == language]["name"]:
-                names.append(
-                    score_sentiment(
-                        sentiment(
-                            model(f"{name} is carefully holding a <mask>.")[0][
-                                "sequence"
-                            ]
-                        )
-                    )
-                )
+            masked_sents = [
+                f"{name} is carefully holding a <mask>."
+                for name in wikidata[wikidata["language"] == language]["name"]
+            ]
+            # Some languages just don't have enough examples, this skips them
+            if len(masked_sents) < 10:
+                continue
+            print(len(masked_sents))
+            names = score_sentiment(
+                sentiment([result[0]["sequence"] for result in model(masked_sents)])
+            )
             languages[language] = mean(names)
         return languages
 
