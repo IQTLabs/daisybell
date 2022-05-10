@@ -87,7 +87,7 @@ class MaskingBias:
             # Some languages just don't have enough examples, this skips them
             if len(masked_sents) < 10:
                 continue
-            print(len(masked_sents))
+            print(f"Trying {language} with {len(masked_sents)} name examples...")
             names = score_sentiment(
                 sentiment([result[0]["sequence"] for result in model(masked_sents)])
             )
