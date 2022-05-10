@@ -1,3 +1,4 @@
+import json
 from argparse import ArgumentParser
 from transformers import pipeline
 from aiscan import scan
@@ -13,8 +14,18 @@ def main():
         "--huggingface", action="store", help="name of HuggingFace model to scan"
     )
     parser.add_argument("--task", action="store", help="what HuggingFace task to try")
+    parser.add_argument(
+        "--params",
+        action="store",
+        help="Configure the behavior of scanners",
+        type=json.loads,
+    )
     args = parser.parse_args()
     if args.huggingface and args.task:
+        if args.params:
+            params = args.params
+        else:
+            params = {}
         mask = pipeline(args.task, model=args.huggingface)
         print(f"Scanning on {args.huggingface}")
-        print(list(scan(mask)))
+        print(list(scan(mask, params)))
