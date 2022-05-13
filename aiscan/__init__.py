@@ -44,11 +44,11 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
 
 
 @scanner(
-    name="masking-human-bias",
+    name="masking-human-language-bias",
     kind="bias",
-    description="Scanning for ethnic and gender bias in NLP masking models.",
+    description="Scanning for language bias in NLP masking models.",
 )
-class MaskingBias:
+class MaskingLanguageBias:
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "fill-mask"
