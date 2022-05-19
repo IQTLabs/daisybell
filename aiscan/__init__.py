@@ -1,5 +1,6 @@
 from typing import Callable, Generator, Sequence, Any
 from pathlib import Path
+from urllib.request import urlretrieve
 from statistics import mean
 import pandas as pd
 from transformers import Pipeline, pipeline
@@ -62,8 +63,10 @@ class MaskingLanguageBias:
             suffix = ""
         wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
-            raise RuntimeError(
-                f"Wikidata file {wikidata_path} must exist to use the masking scanner."
+            wikidata_path.mkdir(exist_ok=True)
+            urlretrieve(
+                "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
+                wikidata_path,
             )
 
         wikidata = pd.read_csv(wikidata_path)
