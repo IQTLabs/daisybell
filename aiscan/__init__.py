@@ -63,7 +63,7 @@ class MaskingLanguageBias:
             suffix = ""
         wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
-            wikidata_path.mkdir(exist_ok=True)
+            (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
             urlretrieve(
                 "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
                 wikidata_path,
