@@ -2,6 +2,7 @@ import json
 from argparse import ArgumentParser
 from transformers import pipeline
 from aiscan import scan
+from tabulate import tabulate
 
 
 def main():
@@ -27,5 +28,9 @@ def main():
         else:
             params = {}
         mask = pipeline(args.task, model=args.huggingface)
-        print(f"Scanning on {args.huggingface}")
-        print(list(scan(mask, params)))
+        print(f"Starting scan on model: {args.huggingface}...")
+        for name, kind, desc, df in scan(mask, params):
+            title = f"Results of {kind} scannner: {name} ({desc})"
+            dashes = "=" * len(title)
+            print(f"{title}\n{dashes}")
+            print(tabulate(df, headers="keys", tablefmt="psql"))

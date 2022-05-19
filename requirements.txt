@@ -1,3 +1,5 @@
 torch
 transformers
 pandas
+tabulate
+types-tabulate
