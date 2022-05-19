@@ -56,7 +56,7 @@ class MaskingLanguageBias:
         except:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> dict:
+    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
         if params.get("suffix"):
             suffix = params["suffix"]
         else:
@@ -100,7 +100,14 @@ class MaskingLanguageBias:
                 sentiment([result[0]["sequence"] for result in model(masked_sents)])
             )
             languages[language] = mean(names)
-        return languages
+
+        return (
+            pd.DataFrame(
+                {"Language": language.keys(), "Sentiment Score": language.values()}
+            )
+            .sort_values("Sentiment Score")
+            .reset_index(drop=True)
+        )
 
 
 @scanner(
