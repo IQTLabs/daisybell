@@ -4,8 +4,8 @@ with open("requirements.txt") as fd:
     install_requires = fd.read().splitlines()
 
 setup(
-    name="aiscan",
-    version="0.1.0",
+    name="daisybell",
+    version="0.2.1",
     description="Scan AI models for problems",
     long_description=open("README.rst").read(),
     keywords="machine_learning artificial_intelligence",
