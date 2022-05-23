@@ -61,6 +61,12 @@ class MaskingLanguageBias:
             suffix = params["suffix"]
         else:
             suffix = ""
+        if params.get("max_names_per_language"):
+            max_names_per_language = params["max_names_per_language"]
+        else:
+            max_names_per_language = (
+                999999999  # If this number is exceeded we got bigger problems
+            )
         wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
             (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
@@ -90,7 +96,9 @@ class MaskingLanguageBias:
 
             masked_sents = [
                 f"{name + suffix} is carefully holding a <mask>."
-                for name in wikidata[wikidata["language"] == language]["name"]
+                for name in wikidata[wikidata["language"] == language]["name"][
+                    :max_names_per_language
+                ]
             ]
             # Some languages just don't have enough examples, this skips them
             if len(masked_sents) < 10:
