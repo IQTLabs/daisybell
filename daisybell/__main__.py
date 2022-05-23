@@ -1,5 +1,5 @@
 from curses import meta
-from typing import Tuple
+from typing import Tuple, Dict, Any, List
 from os import PathLike
 from pathlib import Path
 import json
@@ -27,14 +27,14 @@ def create_file_output(
         model_params: Any parameters for the scanners and model.
     """
     Path(output_path).mkdir(exist_ok=True, parents=True)
-    model_metadata = {}
+    model_metadata: Dict[str, Any] = dict()
     model_metadata["name"] = model_name
     if model_params:
         model_metadata["params"] = model_params
-    model_metadata["scanners"] = []
+    model_metadata["scanners"] = list()
 
     for name, kind, desc, df in scan_output:
-        scan_metadata = {}
+        scan_metadata: Dict[str, Any] = dict()
         scan_metadata["name"] = name
         scan_metadata["kind"] = kind
         scan_metadata["description"] = desc
