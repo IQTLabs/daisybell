@@ -1,12 +1,12 @@
 import json
 from argparse import ArgumentParser
 from transformers import pipeline
-from aiscan import scan
+from daisybell import scan
 from tabulate import tabulate
 
 
 def main():
-    """The entry point of aiscan."""
+    """The entry point of daisybell."""
 
     parser = ArgumentParser(
         description="Scans machine learning models for AI Assurance problems"

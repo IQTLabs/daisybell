@@ -1,5 +1,5 @@
-AI Scan
-~~~~~~~
+daisybell
+~~~~~~~~~~
 
 This is a scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently pre-alpha.
 
@@ -11,20 +11,20 @@ First install it:
 
 ::
 
-    pip install aiscan
+    pip install daisybell
 
 
 Run it in this manner (currently supports models from HuggingFace's repository):
 
 ::
 
-    aiscan --huggingface roberta-base --task fill-mask
+    daisybell --huggingface roberta-base --task fill-mask
 
 Here is another example with a different bias task.
 
 ::
 
-    aiscan --huggingface cross-encoder/nli-distilroberta-base --task zero-shot-classification
+    daisybell --huggingface cross-encoder/nli-distilroberta-base --task zero-shot-classification
 
 That's it for now. More will come.
 
