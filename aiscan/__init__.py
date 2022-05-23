@@ -103,7 +103,7 @@ class MaskingLanguageBias:
 
         return (
             pd.DataFrame(
-                {"Language": language.keys(), "Sentiment Score": language.values()}
+                {"Language": languages.keys(), "Sentiment Score": languages.values()}
             )
             .sort_values("Sentiment Score")
             .reset_index(drop=True)
