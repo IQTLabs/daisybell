@@ -25,5 +25,5 @@ setup(
     packages=find_packages(),
     install_requires=install_requires,
     tests_require=["pytest", "pre-commit"],
-    entry_points={"console_scripts": ["aiscan = aiscan.__main__:main"]},
+    entry_points={"console_scripts": ["daisybell = daisybell.__main__:main"]},
 )
