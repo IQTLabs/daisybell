@@ -18,9 +18,9 @@ jobs:
           sudo apt-get install -yq --no-install-recommends python3-pip python3.7 python3-dev python3-setuptools && \
           pip3 install wheel && \
           python3 setup.py sdist bdist_wheel --universal
-        if: github.repository == 'iqtlabs/aiscan' && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        if: github.repository == 'iqtlabs/daisybell' && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
       - name: Publish package
-        if: github.repository == 'iqtlabs/aiscan' && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        if: github.repository == 'iqtlabs/daisybell' && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: ${{ secrets.PYPI_USERNAME }}
