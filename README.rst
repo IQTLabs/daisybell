@@ -1,7 +1,7 @@
 daisybell
 ~~~~~~~~~~
 
-This is a scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently pre-alpha.
+A scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently pre-alpha.
 
 
 How to Use
@@ -19,6 +19,13 @@ Run it in this manner (currently supports models from HuggingFace's repository):
 ::
 
     daisybell --huggingface roberta-base --task fill-mask
+
+
+The scan can output files for further analysis:
+
+::
+
+    daisybell --huggingface roberta-base --task fill-mask --output results/roberta-base
 
 Here is another example with a different bias task.
 
