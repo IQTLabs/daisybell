@@ -67,7 +67,10 @@ class MaskingLanguageBias:
             max_names_per_language = (
                 999999999  # If this number is exceeded we got bigger problems
             )
-        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
+        if params.get("wikidata_person_names_path"):
+            wikidata_path = Path(params["wikidata_person_names_path"])
+        else:
+            wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
         if not wikidata_path.exists():
             (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
             urlretrieve(
