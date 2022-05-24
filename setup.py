@@ -5,7 +5,7 @@ with open("requirements.txt") as fd:
 
 setup(
     name="daisybell",
-    version="0.3.0",
+    version="0.3.1",
     description="Scan AI models for problems",
     long_description=open("README.rst").read(),
     keywords="machine_learning artificial_intelligence",
