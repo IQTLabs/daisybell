@@ -1,4 +1,4 @@
-from aiscan import scan
+from daisybell import scan
 from transformers import pipeline
 
 

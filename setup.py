@@ -12,7 +12,7 @@ setup(
     author="JJ Ben-Joseph",
     author_email="jbenjoseph@iqt.org",
     python_requires=">=3.8",
-    url="https://github.com/IQTLabs/aiscan",
+    url="https://github.com/IQTLabs/daisybell",
     license="Apache",
     classifiers=[
         "Topic :: Scientific/Engineering :: Artificial Intelligence",

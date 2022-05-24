@@ -5,13 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run aiscan with roberta-base",
+            "name": "Run with roberta-base and fill-mask",
             "type": "python",
             "request": "launch",
-            "module": "aiscan",
+            "module": "daisybell",
             "args": [
                 "--huggingface",
-                "roberta-base"
+                "roberta-base",
+                "--task",
+                "fill-mask"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
