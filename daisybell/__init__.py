@@ -44,6 +44,20 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
             )
 
 
+def get_wikidata_person_names(params: dict) -> pd.DataFrame:
+    if params.get("wikidata_person_names_path"):
+        wikidata_path = Path(params["wikidata_person_names_path"])
+    else:
+        (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
+        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
+    if not wikidata_path.exists():
+        urlretrieve(
+            "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
+            wikidata_path,
+        )
+    return pd.read_csv(wikidata_path)
+
+
 @scanner(
     name="masking-human-language-bias",
     kind="bias",
@@ -67,18 +81,8 @@ class MaskingLanguageBias:
             max_names_per_language = (
                 999999999  # If this number is exceeded we got bigger problems
             )
-        if params.get("wikidata_person_names_path"):
-            wikidata_path = Path(params["wikidata_person_names_path"])
-        else:
-            (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
-            wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
-        if not wikidata_path.exists():
-            urlretrieve(
-                "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
-                wikidata_path,
-            )
 
-        wikidata = pd.read_csv(wikidata_path)
+        wikidata = get_wikidata_person_names(params)
 
         sentiment = pipeline(
             "sentiment-analysis",
