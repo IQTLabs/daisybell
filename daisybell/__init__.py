@@ -44,7 +44,7 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
             )
 
 
-def get_wikidata_person_names(params: dict) -> pd.DataFrame:
+def handle_common_language_params(params: dict) -> pd.DataFrame:
     if params.get("wikidata_person_names_path"):
         wikidata_path = Path(params["wikidata_person_names_path"])
     else:
@@ -55,7 +55,17 @@ def get_wikidata_person_names(params: dict) -> pd.DataFrame:
             "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
             wikidata_path,
         )
-    return pd.read_csv(wikidata_path)
+    if params.get("suffix"):
+        suffix = params["suffix"]
+    else:
+        suffix = ""
+    if params.get("max_names_per_language"):
+        max_names_per_language = params["max_names_per_language"]
+    else:
+        max_names_per_language = (
+            999999999  # If this number is exceeded we got bigger problems
+        )
+    return suffix, max_names_per_language, pd.read_csv(wikidata_path)
 
 
 @scanner(
@@ -71,18 +81,7 @@ class MaskingLanguageBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        if params.get("suffix"):
-            suffix = params["suffix"]
-        else:
-            suffix = ""
-        if params.get("max_names_per_language"):
-            max_names_per_language = params["max_names_per_language"]
-        else:
-            max_names_per_language = (
-                999999999  # If this number is exceeded we got bigger problems
-            )
-
-        wikidata = get_wikidata_person_names(params)
+        suffix, max_names_per_language, wikidata = handle_common_language_params(params)
 
         sentiment = pipeline(
             "sentiment-analysis",
