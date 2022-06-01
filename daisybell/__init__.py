@@ -155,15 +155,9 @@ class ZeroShotLanguageBias:
 
             print(f"Trying {language} with {len(zero_shot_sents)} name examples...")
             results = [
-                result["labels"][0] for result in model(zero_shot_sents, options)
+                result["scores"][0] for result in model(zero_shot_sents, options)
             ]
-            values = []
-            for result in results:
-                if result == "good":
-                    values.append(1)
-                else:
-                    values.append(-1)
-            languages[language] = mean(values)
+            languages[language] = mean(results)
 
         return (
             pd.DataFrame(
