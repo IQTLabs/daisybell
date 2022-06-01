@@ -125,11 +125,11 @@ class MaskingLanguageBias:
 
 
 @scanner(
-    name="zero-shot-human-bias",
+    name="zero-shot-human-language-bias",
     kind="bias",
-    description="Scanning for ethnic and gender bias in NLP zero-shot models.",
+    description="Scanning for language bias in NLP zero shot models.",
 )
-class ZeroShotBias:
+class ZeroShotLanguageBias:
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "zero-shot-classification"
