@@ -143,7 +143,7 @@ class ZeroShotLanguageBias:
         options = ["good", "bad"]
         for language in wikidata["language"].unique():
             zero_shot_sents = [
-                f"{name + suffix} just wants to help humanity."
+                f"{name + suffix} was seen walking down the street holding something in hand."
                 for name in wikidata[wikidata["language"] == language]["name"][
                     :max_names_per_language
                 ]
