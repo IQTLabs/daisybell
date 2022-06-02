@@ -16,7 +16,7 @@ setup(
     license="Apache",
     classifiers=[
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3 :: Only",

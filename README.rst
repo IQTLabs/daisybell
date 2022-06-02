@@ -1,7 +1,7 @@
 daisybell
 ~~~~~~~~~~
 
-A scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently pre-alpha.
+A scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently alpha.
 
 
 How to Use
