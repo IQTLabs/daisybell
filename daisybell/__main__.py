@@ -73,9 +73,9 @@ def main():
             params = args.params
         else:
             params = {}
-        mask = pipeline(args.task, model=args.huggingface)
+        model = pipeline(args.task, model=args.huggingface)
         print(f"Starting scan on model: {args.huggingface}...")
-        scan_output = list(scan(mask, params))
+        scan_output = list(scan(model, params))
         for name, kind, desc, df in scan_output:
             title = f"Results of {kind} scannner: {name} ({desc})"
             dashes = "=" * len(title)
