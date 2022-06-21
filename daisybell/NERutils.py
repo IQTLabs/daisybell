@@ -72,14 +72,120 @@ class NERobject:
         line_item = 'lang,air,tn,fp,fn,tp,t_val,p_val,book,transformer\n'
         f_bias_results = open(self.super_path + "results/Bias_metrics_results.csv", 'a')
         f_bias_results.write(     line_item     )  
-        f_bias_results.close() 
+        f_bias_results.close()
 
 
-   
+    def get_pred_NER_labels(self, ner_results, text):
+        size_of_text = len(text)
+        buffer_vals = "8" * size_of_text
+        list1 = list(buffer_vals)
+
+        for dict_item in ner_results:
+            if dict_item['entity_group'] == "PER":
+                start_index = dict_item['start']
+                end_index = dict_item['end']
+                for i in range(start_index, end_index):
+                    list1[i] = "1"
+        for i in range(len(text)):
+            if (text[i] == ' '):
+                list1[i] = " "
+        return ''.join(list1)
+
 
     def remove_special_characters(self, string_to_clean):
         new_string = re.sub(r"[^a-zA-Z0-9]", "", string_to_clean)
         return new_string
+
+
+    def mark_spaces(self, original_text, new_text):
+        list1 = list(new_text)
+        for i in range(len(original_text)):
+            if (original_text[i] == ' '):
+                list1[i] = " "
+        return ''.join(list1)
+
+
+    def convert_index_to_tuple(self, words, ners):
+        list_word_ner_tuple = []
+        word = ""
+        tag = ""
+        for i in range(len(words)):
+            if words[i] != " ":
+                word = word + words[i]
+                tag = tag + ners[i]
+            else:
+                if "1" in tag:
+                    tag = "B-PER"
+                else:
+                    tag = "O"
+                list_word_ner_tuple.append((word, tag))
+                word = ""
+                tag = ""
+        ## there is one last left to be added
+        if "1" in tag:
+            tag = "B-PER"
+        else:
+            tag = "O"
+        list_word_ner_tuple.append((word, tag))
+        return list_word_ner_tuple
+
+
+    def mark_person_tags(self, NER_tags, new_text):
+        list1 = list(new_text)
+        for list_item in NER_tags:
+            start_index = list_item[0]
+            end_index = list_item[1]
+            for i in range(start_index, end_index):
+                list1[i] = "1"
+        return ''.join(list1)
+
+
+    def find_random_string_in_list(self, comb_names):
+        length = len(comb_names)
+        r1 = random.randint(0, length - 1)
+        while (self.hasNumbers(comb_names[r1])):
+            r1 = random.randint(0, length - 1)
+        return comb_names[r1]
+
+
+    def get_dictionary(self, single_word_annot_unique_names, comb_names):
+        dict_item = {}
+        for name in single_word_annot_unique_names:
+            name_replacement = self.find_random_string_in_list(comb_names)
+            dict_item[name] = name_replacement
+
+            ## removed this to improve the robustness of the experiment
+            '''
+            name_replacement = find_closest_string_in_list(name, comb_names)
+            if name_replacement:
+                dict_item[name] = name_replacement
+            '''
+
+        return dict_item
+
+
+
+    def generateRandomLowerCaseString(self, length):
+        # Generate lower case alphabets string
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        return result_str
+
+    def hasNumbers(self, inputString):
+        return any(char.isdigit() for char in inputString)
+
+
+    def print_characters(self, the_text_words, the_text_NER):
+        for i in range(len(the_text_words)):
+            print(the_text_words[i], the_text_NER[i])
+
+    def find_closest_string_in_list(self, name, comb_names):
+        candidate_str = None
+        candidate = difflib.get_close_matches(name, comb_names, n=1)
+        # print(candidate)
+        if candidate:
+            candidate_str = candidate[0]
+        return candidate_str
 
 
     def save_all_results_to_csv(self, list_of_all_standard_ML_metrics, list_of_all_bias_metrics, book_string, transformer_string):
@@ -109,156 +215,13 @@ class NERobject:
             f_bias_results.close() 
 
 
+##################################################################################
 
 
 def something1():
     return something
 
 
-
-
-
-##################################################################################
-
-
-def generateRandomLowerCaseString(length):
-    # Generate lower case alphabets string
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str   
-
-
-##################################################################################
-
-def mark_spaces(original_text, new_text):
-    list1 = list(new_text)
-
-    for i in range(   len(original_text)  ):
-        if (original_text[i] == ' '):
-            list1[i] = " "
-   
-    return ''.join(list1)
-
-##################################################################################
-
-def mark_person_tags(NER_tags, new_text):
-    list1 = list(new_text)
-
-    for list_item in NER_tags:
-        start_index = list_item[0]
-        end_index   = list_item[1]
-        for i in range(start_index, end_index):
-            list1[i] = "1"
-
-    return ''.join(list1)
-
-
-##################################################################################
-
-def convert_index_to_tuple(words, ners):
-    list_word_ner_tuple = []
-    
-    word = ""
-    tag  = ""
-     
-    for i in range(   len(words)   ):
-        if words[i] != " ":
-            word = word + words[i]
-            tag  = tag  + ners[i]
-        else:
-            if "1" in tag:
-                tag = "B-PER"
-            else:
-                tag = "O"
-            list_word_ner_tuple.append(  (word, tag)  )
-            word = ""
-            tag  = ""
-    
-    ## there is one last left to be added
-    if "1" in tag:
-        tag = "B-PER"
-    else:
-        tag = "O"
-    list_word_ner_tuple.append(   (word, tag)    )        
-    
-    return list_word_ner_tuple   
-
-
-##################################################################################
-
-def get_pred_NER_labels(ner_results, text):
-
-    size_of_text = len(text)
-    buffer_vals  = "8"*size_of_text
-    list1 = list(buffer_vals)
-
-    for dict_item in ner_results:
-        
-        if dict_item['entity_group'] == "PER":
-            start_index = dict_item['start']
-            end_index   = dict_item['end']
-            for i in range(start_index, end_index):
-                list1[i] = "1"
-    for i in range(    len(text)     ):
-        if (text[i] == ' '):
-            list1[i] = " "
-    return ''.join(list1)
-
-
-##################################################################################
-
-def print_characters(the_text_words, the_text_NER):
-    for i in range(     len(the_text_words)    ):
-        print(the_text_words[i], the_text_NER[i])
-        ## input()
-
-
-#################################################################################
-
-
-def find_random_string_in_list(comb_names):
-    length = len(comb_names)
-    r1 = random.randint(0, length - 1)
-    while ( hasNumbers(   comb_names[r1]  ) ):
-        r1 = random.randint(0, length - 1)  
-    return comb_names[r1]
-
-#################################################################################
-
-def find_closest_string_in_list(name, comb_names):
-    candidate_str = None
-    candidate = difflib.get_close_matches(name, comb_names, n=1)
-    #print(candidate)
-    if candidate:
-        candidate_str = candidate[0]
-    return candidate_str
-
-##################################################################################
-
-def hasNumbers(inputString):
-    return any(char.isdigit() for char in inputString)
-
-##################################################################################
-
-def get_dictionary(single_word_annot_unique_names, comb_names):
-
-    dict_item = {}
-
-    for name in single_word_annot_unique_names:
-
-        name_replacement = find_random_string_in_list(comb_names)
-        dict_item[name] = name_replacement  
-
-        
-        ## removed this to improve the robustness of the experiment
-        '''
-        name_replacement = find_closest_string_in_list(name, comb_names)
-        if name_replacement:
-            dict_item[name] = name_replacement
-        '''
-        
-
-    return dict_item
 
 
 #################################################################################
