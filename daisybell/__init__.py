@@ -136,7 +136,7 @@ class ZeroShotLanguageBias:
         except:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> dict:
+    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
         suffix, max_names_per_language, wikidata = handle_common_language_params(params)
 
         languages = {}
