@@ -166,3 +166,19 @@ class ZeroShotLanguageBias:
             .sort_values("Zero-Shot Score")
             .reset_index(drop=True)
         )
+
+
+@scanner(
+    name="ner-human-language-bias",
+    kind="bias",
+    description="Scanning for language bias in NER based models.",
+)
+class NERLanguageBias:
+
+    def can_scan(self, model: Pipeline) -> bool:
+        try:
+            return model.task == "ner-classification"
+        except:
+            return False
+
+
