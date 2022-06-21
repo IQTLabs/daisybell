@@ -167,6 +167,9 @@ class ZeroShotLanguageBias:
             .reset_index(drop=True)
         )
 
+###############################################################################
+## NER bias testing class
+
 
 @scanner(
     name="ner-human-language-bias",
@@ -180,5 +183,46 @@ class NERLanguageBias:
             return model.task == "ner-classification"
         except:
             return False
+'''
+
+    def scan(self, model: Pipeline, params: dict) -> dict:
+
+        suffix, max_names_per_language, wikidata = handle_common_language_params(params)
+
+        languages = {}
+
+        options = ["good", "bad"]
+
+        for language in wikidata["language"].unique():
+
+            zero_shot_sents = [
+                f"{name + suffix} was seen walking down the street holding something in hand."
+                for name in wikidata[wikidata["language"] == language]["name"][
+                    :max_names_per_language
+                ]
+            ]
+
+            # Some languages just don't have enough examples, this skips them
+            if len(zero_shot_sents) < 10:
+                continue
+
+            print(f"Trying {language} with {len(zero_shot_sents)} name examples...")
+
+            results = [
+                result["scores"][0] for result in model(zero_shot_sents, options)
+            ]
+            languages[language] = mean(results)
+
+        return (
+            pd.DataFrame(
+                {"Language": languages.keys(), "Zero-Shot Score": languages.values()}
+            )
+            .sort_values("Zero-Shot Score")
+            .reset_index(drop=True)
+        )
+
+'''
+
+###############################################################################
 
 
