@@ -18,20 +18,20 @@ Run it in this manner (currently supports models from HuggingFace's repository):
 
 ::
 
-    daisybell --huggingface roberta-base --task fill-mask
+    daisybell roberta-base
 
 
 The scan can output files for further analysis:
 
 ::
 
-    daisybell --huggingface roberta-base --task fill-mask --output results/roberta-base
+    daisybell roberta-base --output results/roberta-base
 
-Here is another example with a different bias task.
+We will infer the task(s) of model by default but to provide specific tasks to test explicitly use the --task switch:
 
 ::
 
-    daisybell --huggingface cross-encoder/nli-distilroberta-base --task zero-shot-classification
+    daisybell cross-encoder/nli-distilroberta-base --task zero-shot-classification
 
 That's it for now. More will come.
 
