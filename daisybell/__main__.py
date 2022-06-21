@@ -52,7 +52,7 @@ def main():
         description="Scans machine learning models for AI Assurance problems"
     )
     parser.add_argument(
-        "--huggingface", action="store", help="name of HuggingFace model to scan"
+        "huggingface", action="store", help="name of HuggingFace model to scan"
     )
     parser.add_argument("--task", action="store", help="what HuggingFace task to try")
     parser.add_argument(
