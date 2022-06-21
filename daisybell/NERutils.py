@@ -40,7 +40,7 @@ from scipy.stats import ttest_ind, chi2_contingency
 
 ##################################################################################
 
-class NERobject:
+class NERutils:
 
     self.N_tokens = 100               ## 30
     self.metric_datasets_seqeval = load_metric("seqeval")
@@ -52,6 +52,8 @@ class NERobject:
     self.date_exp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     self.super_path = self.output_path + self.experiment_name + self.date_exp + "/"
     self.book_path = '../data/input/corpus/'
+    self.lang_control = 'English'
+    self.lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
 
     def __init__(self):
         
@@ -412,8 +414,6 @@ class NERobject:
     def compute_multilanguage_bias_metrics(self, nlp, single_word_annot_unique_names_en, annot_list_of_word_ner_tuple,
                                            transformer_string, book_string):
 
-        lang_control = 'English'
-        lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
 
         list_of_all_standard_ML_metrics = []
         list_of_all_bias_metrics = []
@@ -421,7 +421,7 @@ class NERobject:
         ## Control
         en_dict_recalls, en_conf_mat_dict, en_final_list_of_preds_quadruples = self.predict_data_bias(
             nlp,
-            lang_control,
+            self.lang_control,
             single_word_annot_unique_names_en,
             self.names_data,
             annot_list_of_word_ner_tuple,
@@ -434,7 +434,7 @@ class NERobject:
 
         ############################
 
-        for lang_test in lang_test_list:
+        for lang_test in self.lang_test_list:
             sp_dict_recalls, sp_conf_mat_dict, sp_final_list_of_preds_quadruples = self.predict_data_bias(
                 nlp,
                 lang_test,
@@ -489,6 +489,7 @@ class NERobject:
         for i in range(len(the_text_words)):
             print(the_text_words[i], the_text_NER[i])
 
+
     def find_closest_string_in_list(self, name, comb_names):
         candidate_str = None
         candidate = difflib.get_close_matches(name, comb_names, n=1)
@@ -520,43 +521,10 @@ class NERobject:
             f_bias_results.close() 
 
 
-##################################################################################
-
-'''
-def something1():
-    return something
-
-'''
 
 
 
 
-
-###############################################################################################
-##
-## MAIN_LOOP
-
-## "asahi417/tner-xlm-roberta-base-ontonotes5", "asahi417/tner-xlm-roberta-base-uncased-ontonotes5", "Jean-Baptiste/roberta-large-ner-english"
-## list_Transformer_models = ["Davlan/xlm-roberta-large-ner-hrl", "Davlan/xlm-roberta-base-ner-hrl"]
-
-list_Transformer_models = ["Davlan/xlm-roberta-base-ner-hrl"]
-
-
-list_Corpus_books = ['Adventures_of_Huckleberry_Finn', 'The_Great_Gatsby', 'Wuthering_Heights', 'The_Secret_Garden', 'Pride_and_Prejudice', 'Frankenstein', 'Dracula', 'Treasure_Island', 'Emma', 'The_Catcher_in_the_Rye', 'The_Picture_of_Dorian_Gray', 'Anne_of_Green_Gables', 'Jane_Eyre']
-
-
-
-for book_string in list_Corpus_books:
-
-    single_word_annot_unique_names_en, annot_list_of_word_ner_tuple = process_each_book(   book_string   )
-    for transformer_string in list_Transformer_models:
-        
-        nlp = initialize_Transformer_model(transformer_string, N_tokens)
-        
-        compute_multilanguage_bias_metrics(nlp, single_word_annot_unique_names_en, annot_list_of_word_ner_tuple, transformer_string, book_string)
-        
-
-###############################################################################################
 
 
 

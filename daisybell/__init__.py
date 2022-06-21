@@ -9,8 +9,6 @@ from transformers import Pipeline, pipeline
 
 import NERutils
 
-NER_OBJ = NERutils.NERobject()
-
 ######################################################
 
 
@@ -186,9 +184,16 @@ class ZeroShotLanguageBias:
     kind="bias",
     description="Scanning for language bias in NER based models.",
 )
-class NERLanguageBias(NER_OBJ):
+class NERLanguageBias(NERutils):
 
-    self.NER = NER_OBJ
+    ## "asahi417/tner-xlm-roberta-base-ontonotes5", "asahi417/tner-xlm-roberta-base-uncased-ontonotes5", "Jean-Baptiste/roberta-large-ner-english"
+    ## list_Transformer_models = ["Davlan/xlm-roberta-large-ner-hrl", "Davlan/xlm-roberta-base-ner-hrl"
+
+    self.list_Transformer_models = ["Davlan/xlm-roberta-base-ner-hrl"]
+
+    self.list_Corpus_books = ['Adventures_of_Huckleberry_Finn', 'The_Great_Gatsby', 'Wuthering_Heights', 'The_Secret_Garden', 'Pride_and_Prejudice',
+                              'Frankenstein', 'Dracula', 'Treasure_Island', 'Emma', 'The_Catcher_in_the_Rye', 'The_Picture_of_Dorian_Gray',
+                              'Anne_of_Green_Gables', 'Jane_Eyre']
 
     def can_scan(self, model: Pipeline) -> bool:
         try:
@@ -196,16 +201,12 @@ class NERLanguageBias(NER_OBJ):
         except:
             return False
 
-
     def scan(self, model: Pipeline, params: dict) -> dict:
         res = {}
-        model()
+        for book_string in self.list_Corpus_books:
+            single_word_annot_unique_names_en, annot_list_of_word_ner_tuple = self.process_each_book(   book_string   )
+            for transformer_string in self.list_Transformer_models:
+                nlp = self.initialize_Transformer_model(transformer_string, self.N_tokens)
+                self.compute_multilanguage_bias_metrics(nlp, single_word_annot_unique_names_en, annot_list_of_word_ner_tuple, transformer_string, book_string)
         return res
-
-        
-
-
-
-###############################################################################
-
 
