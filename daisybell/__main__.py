@@ -68,12 +68,15 @@ def main():
     )
 
     args = parser.parse_args()
-    if args.huggingface and args.task:
+    if args.huggingface:
         if args.params:
             params = args.params
         else:
             params = {}
-        model = pipeline(args.task, model=args.huggingface)
+        if args.task:
+            model = pipeline(args.task, model=args.huggingface)
+        else:
+            model = pipeline(model=args.huggingface)
         print(f"Starting scan on model: {args.huggingface}...")
         scan_output = list(scan(model, params))
         for name, kind, desc, df in scan_output:
