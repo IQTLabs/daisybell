@@ -166,3 +166,19 @@ class ZeroShotLanguageBias:
             .sort_values("Zero-Shot Score")
             .reset_index(drop=True)
         )
+
+
+@scanner(
+    name="ner-human-language-bias",
+    kind="bias",
+    description="Scanning for language bias in NER based models.",
+)
+class NerLanguageBias:
+    def can_scan(self, model: Pipeline) -> bool:
+        try:
+            return model.task == "token-classification"
+        except:
+            return False
+
+    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+        raise NotImplementedError("NER scanning is not yet supported.")
