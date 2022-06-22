@@ -52,7 +52,7 @@ def main():
         description="Scans machine learning models for AI Assurance problems"
     )
     parser.add_argument(
-        "huggingface", action="store", help="name of HuggingFace model to scan"
+        "model", action="store", help="name of HuggingFace model to scan"
     )
     parser.add_argument("--task", action="store", help="what HuggingFace task to try")
     parser.add_argument(
@@ -73,10 +73,10 @@ def main():
     else:
         params = {}
     if args.task:
-        model = pipeline(args.task, model=args.huggingface)
+        model = pipeline(args.task, model=args.model)
     else:
-        model = pipeline(model=args.huggingface)
-    print(f"Starting scan on model: {args.huggingface}...")
+        model = pipeline(model=args.model)
+    print(f"Starting scan on model: {args.model}...")
     scan_output = list(scan(model, params))
     for name, kind, desc, df in scan_output:
         title = f"Results of {kind} scannner: {name} ({desc})"
@@ -85,4 +85,4 @@ def main():
         print(tabulate(df, headers="keys", tablefmt="psql"))
     if args.output:
         print(f"Saving output to {args.output}...")
-        create_file_output(scan_output, args.output, args.huggingface, args.params)
+        create_file_output(scan_output, args.output, args.model, args.params)
