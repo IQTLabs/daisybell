@@ -68,22 +68,21 @@ def main():
     )
 
     args = parser.parse_args()
-    if args.huggingface:
-        if args.params:
-            params = args.params
-        else:
-            params = {}
-        if args.task:
-            model = pipeline(args.task, model=args.huggingface)
-        else:
-            model = pipeline(model=args.huggingface)
-        print(f"Starting scan on model: {args.huggingface}...")
-        scan_output = list(scan(model, params))
-        for name, kind, desc, df in scan_output:
-            title = f"Results of {kind} scannner: {name} ({desc})"
-            dashes = "=" * len(title)
-            print(f"{title}\n{dashes}")
-            print(tabulate(df, headers="keys", tablefmt="psql"))
-        if args.output:
-            print(f"Saving output to {args.output}...")
-            create_file_output(scan_output, args.output, args.huggingface, args.params)
+    if args.params:
+        params = args.params
+    else:
+        params = {}
+    if args.task:
+        model = pipeline(args.task, model=args.huggingface)
+    else:
+        model = pipeline(model=args.huggingface)
+    print(f"Starting scan on model: {args.huggingface}...")
+    scan_output = list(scan(model, params))
+    for name, kind, desc, df in scan_output:
+        title = f"Results of {kind} scannner: {name} ({desc})"
+        dashes = "=" * len(title)
+        print(f"{title}\n{dashes}")
+        print(tabulate(df, headers="keys", tablefmt="psql"))
+    if args.output:
+        print(f"Saving output to {args.output}...")
+        create_file_output(scan_output, args.output, args.huggingface, args.params)
