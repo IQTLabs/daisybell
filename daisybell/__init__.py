@@ -8,6 +8,7 @@ from transformers import Pipeline, pipeline
 REGISTERED_SCANNERS = []
 
 import NERutils
+NER = NERutils.NERutils()
 
 
 def scanner(name: str, kind: str, description: str) -> Callable:
@@ -180,9 +181,9 @@ class NerLanguageBias:
     ## "asahi417/tner-xlm-roberta-base-ontonotes5", "asahi417/tner-xlm-roberta-base-uncased-ontonotes5", "Jean-Baptiste/roberta-large-ner-english"
     ## list_Transformer_models = ["Davlan/xlm-roberta-large-ner-hrl", "Davlan/xlm-roberta-base-ner-hrl"
 
-    self.list_Transformer_models = ["Davlan/xlm-roberta-base-ner-hrl"]
+    NER.list_Transformer_models = ["Davlan/xlm-roberta-base-ner-hrl"]
 
-    self.list_Corpus_books = ['Adventures_of_Huckleberry_Finn', 'The_Great_Gatsby', 'Wuthering_Heights',
+    NER.list_Corpus_books = ['Adventures_of_Huckleberry_Finn', 'The_Great_Gatsby', 'Wuthering_Heights',
                               'The_Secret_Garden', 'Pride_and_Prejudice',
                               'Frankenstein', 'Dracula', 'Treasure_Island', 'Emma', 'The_Catcher_in_the_Rye',
                               'The_Picture_of_Dorian_Gray',
@@ -192,16 +193,18 @@ class NerLanguageBias:
 
     def can_scan(self, model: Pipeline) -> bool:
         try:
-            return model.task == "token-classification"
+            return model.task == "ner-classification"
         except:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+        ## Note: Currently ignoring sent pipeline and params and using
+        ## what defined in this class statically
         ## raise NotImplementedError("NER scanning is not yet supported.")
         res = {}
-        for book_string in self.list_Corpus_books:
-            single_word_annot_unique_names_en, annot_list_of_word_ner_tuple = self.process_each_book(   book_string   )
-            for transformer_string in self.list_Transformer_models:
-                nlp = self.initialize_Transformer_model(transformer_string, self.N_tokens)
-                self.compute_multilanguage_bias_metrics(nlp, single_word_annot_unique_names_en, annot_list_of_word_ner_tuple, transformer_string, book_string)
+        for book_string in NER.list_Corpus_books:
+            single_word_annot_unique_names_en, annot_list_of_word_ner_tuple = NER.process_each_book(   book_string   )
+            for transformer_string in NER.list_Transformer_models:
+                nlp = NER.initialize_Transformer_model(transformer_string, NER.N_tokens)
+                NER.compute_multilanguage_bias_metrics(nlp, single_word_annot_unique_names_en, annot_list_of_word_ner_tuple, transformer_string, book_string)
         return res
