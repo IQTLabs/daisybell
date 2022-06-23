@@ -4,7 +4,7 @@ from transformers import pipeline
 
 def test_scanning_masking_human_bias():
     res = scan(
-        pipeline("fill-mask", model="roberta-base"),
+        pipeline(model="roberta-base"),
         params={"max_names_per_language": 10},
     )
 
@@ -16,9 +16,7 @@ def test_scanning_masking_human_bias():
 
 def test_scanning_zero_shot_human_bias():
     res = scan(
-        pipeline(
-            "zero-shot-classification", model="cross-encoder/nli-distilroberta-base"
-        ),
+        pipeline(model="cross-encoder/nli-distilroberta-base"),
         params={"max_names_per_language": 10},
     )
     name, kind, _, df = list(res)[0]
