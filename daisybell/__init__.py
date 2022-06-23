@@ -4,10 +4,12 @@ from urllib.request import urlretrieve
 from statistics import mean
 import pandas as pd
 from transformers import Pipeline, pipeline
+import os
 
 REGISTERED_SCANNERS = []
 
-import NERutils
+print(os.getcwd())
+import daisybell.NERutils as NERutils
 NER = NERutils.NERutils()
 
 
