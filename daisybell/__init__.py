@@ -186,16 +186,15 @@ class NerLanguageBias:
     NER.list_Transformer_models = ["Davlan/xlm-roberta-base-ner-hrl"]
 
     NER.list_Corpus_books = ['Adventures_of_Huckleberry_Finn', 'The_Great_Gatsby', 'Wuthering_Heights',
-                              'The_Secret_Garden', 'Pride_and_Prejudice',
-                              'Frankenstein', 'Dracula', 'Treasure_Island', 'Emma', 'The_Catcher_in_the_Rye',
-                              'The_Picture_of_Dorian_Gray',
-                              'Anne_of_Green_Gables', 'Jane_Eyre']
-
+                             'The_Secret_Garden', 'Pride_and_Prejudice',
+                             'Frankenstein', 'Dracula', 'Treasure_Island', 'Emma', 'The_Catcher_in_the_Rye',
+                             'The_Picture_of_Dorian_Gray',
+                             'Anne_of_Green_Gables', 'Jane_Eyre']
 
 
     def can_scan(self, model: Pipeline) -> bool:
         try:
-            return model.task == "ner-classification"
+            return model.task == "token-classification"
         except:
             return False
 
@@ -204,6 +203,7 @@ class NerLanguageBias:
         ## what defined in this class statically
         ## raise NotImplementedError("NER scanning is not yet supported.")
         res = {}
+        print("starting NER of 13 books...")
         for book_string in NER.list_Corpus_books:
             single_word_annot_unique_names_en, annot_list_of_word_ner_tuple = NER.process_each_book(   book_string   )
             for transformer_string in NER.list_Transformer_models:

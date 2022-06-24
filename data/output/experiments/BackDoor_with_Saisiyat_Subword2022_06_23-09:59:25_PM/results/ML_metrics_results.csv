@@ -1,0 +1,3 @@
+precision,recall,f1,number,lang,book,transformer
+0.9526242452392011,0.6795891318754141,0.7932701605105394,3018,English,Adventures_of_Huckleberry_Finn,Davlanxlmrobertabasenerhrl
+0.923777961888981,0.3694499668654738,0.527810650887574,3018,Amis,Adventures_of_Huckleberry_Finn,Davlanxlmrobertabasenerhrl

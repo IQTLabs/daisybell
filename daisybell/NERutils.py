@@ -54,6 +54,7 @@ class NERutils:
         self.book_path = './data/input/corpus/'
         self.lang_control = 'English'
         self.lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
+
         
         ## experiment name/date
         os.makedirs(self.super_path)
@@ -371,7 +372,8 @@ class NERutils:
         output_path = self.super_path + 'images/' + type_metric + '_' + book_name + '_' + transformer_string + '.png'
         dfi.export(
             df.style.format(precision=6).hide_index().set_caption(caption_text),
-            output_path
+            output_path,
+            table_conversion='matplotlib'
         )
 
     ##################################################################################
