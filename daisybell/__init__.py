@@ -58,6 +58,13 @@ def handle_dataset(url: str, alterative_path: str = None) -> pd.DataFrame:
     return open(output_path, "rb")
 
 
+def handle_books_dataset(params: dict) -> pd.DataFrame:
+    books_url = (
+        "https://iqtlabs-aia-datasets.s3.amazonaws.com/public_domain_books.tar.gz"
+    )
+    return handle_dataset(books_url, params.get("books_path"))
+
+
 def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
     wikidata_url = (
         "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
