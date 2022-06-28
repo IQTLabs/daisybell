@@ -51,7 +51,7 @@ def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
     else:
         (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
         output_path = Path.home() / ".iqtlabs" / os.path.basename(url)
-    if alterative_path and not alterative_path.exists():
+    if not output_path.exists():
         urlretrieve(
             url,
             output_path,
