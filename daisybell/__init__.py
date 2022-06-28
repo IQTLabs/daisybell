@@ -1,4 +1,4 @@
-from typing import Callable, Generator, Sequence, Any
+from typing import Callable, Generator, Sequence, Any, Tuple
 from pathlib import Path
 import os
 from urllib.request import urlretrieve
@@ -73,7 +73,9 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
 
 
-def handle_common_params_to_masking_and_zeroshot(params: dict) -> pd.DataFrame:
+def handle_common_params_to_masking_and_zeroshot(
+    params: dict,
+) -> Tuple[str, int, pd.DataFrame]:
     if params.get("suffix"):
         suffix = params["suffix"]
     else:
