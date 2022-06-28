@@ -46,6 +46,16 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
 
 
 def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
+    """
+    Handles the dataset.
+
+    Parameters:
+        url: The url of the dataset.
+        alterative_path: An alternative path to the dataset if not using the default (~/.iqtlabs).
+
+    Returns:
+        The path to the dataset.
+    """
     if alterative_path:
         output_path = Path(alterative_path)
     else:
@@ -60,6 +70,15 @@ def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
 
 
 def handle_books_dataset(params: dict) -> pd.DataFrame:
+    """
+    Downloads the books dataset or provides the cached copy.
+
+    Parameters:
+        params: The parameters passed to daisybell.
+
+    Returns:
+        A pandas DataFrame with the books dataset.
+    """
     books_url = (
         "https://iqtlabs-aia-datasets.s3.amazonaws.com/public_domain_books.tar.gz"
     )
@@ -67,6 +86,15 @@ def handle_books_dataset(params: dict) -> pd.DataFrame:
 
 
 def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
+    """
+    Downloads the wikidata dataset or provides the cached copy.
+
+    Parameters:
+        params: The parameters passed to daisybell.
+
+    Returns:
+        A pandas DataFrame with the wikidata dataset.
+    """
     wikidata_url = (
         "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
     )
@@ -76,6 +104,15 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
 def handle_common_params_to_masking_and_zeroshot(
     params: dict,
 ) -> Tuple[str, int, pd.DataFrame]:
+    """
+    Handles the common parameters to masking and zeroshot scanners.
+
+    Parameters:
+        params: The parameters passed to daisybell.
+
+    Returns:
+        A tuple of the suffix, the maximum number of names per language, and the wikidata dataframe.
+    """
     if params.get("suffix"):
         suffix = params["suffix"]
     else:
