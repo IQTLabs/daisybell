@@ -50,7 +50,7 @@ def handle_dataset(url: str, alterative_path: str = None) -> pd.DataFrame:
     else:
         (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
         output_path = Path.home() / ".iqtlabs" / "public_domain_books.tar.gz"
-    if not alterative_path.exists():
+    if alterative_path and not alterative_path.exists():
         urlretrieve(
             url,
             output_path,
