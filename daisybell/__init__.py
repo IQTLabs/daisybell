@@ -55,6 +55,8 @@ def handle_common_language_params(params: dict) -> pd.DataFrame:
             "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
             wikidata_path,
         )
+
+def handle_common_params_to_masking_and_zeroshot(params: dict) -> pd.DataFrame:
     if params.get("suffix"):
         suffix = params["suffix"]
     else:
@@ -81,7 +83,11 @@ class MaskingLanguageBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        suffix, max_names_per_language, wikidata = handle_common_language_params(params)
+        (
+            suffix,
+            max_names_per_language,
+            wikidata,
+        ) = handle_common_params_to_masking_and_zeroshot(params)
 
         sentiment = pipeline(
             "sentiment-analysis",
@@ -137,7 +143,11 @@ class ZeroShotLanguageBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        suffix, max_names_per_language, wikidata = handle_common_language_params(params)
+        (
+            suffix,
+            max_names_per_language,
+            wikidata,
+        ) = handle_common_params_to_masking_and_zeroshot(params)
 
         languages = {}
         options = ["good", "bad"]
