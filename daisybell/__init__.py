@@ -1,5 +1,6 @@
 from typing import Callable, Generator, Sequence, Any
 from pathlib import Path
+from os.path import basename
 from urllib.request import urlretrieve
 from statistics import mean
 import pandas as pd
@@ -49,7 +50,7 @@ def handle_dataset(url: str, alterative_path: str = None) -> pd.DataFrame:
         output_path = Path(alterative_path)
     else:
         (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
-        output_path = Path.home() / ".iqtlabs" / "public_domain_books.tar.gz"
+        output_path = Path.home() / ".iqtlabs" / basename(url)
     if alterative_path and not alterative_path.exists():
         urlretrieve(
             url,
