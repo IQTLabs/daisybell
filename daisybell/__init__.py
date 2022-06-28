@@ -84,9 +84,7 @@ def handle_common_params_to_masking_and_zeroshot(params: dict) -> pd.DataFrame:
         max_names_per_language = (
             999999999  # If this number is exceeded we got bigger problems
         )
-    with handle_wikidata_dataset(params) as fd:
-        df = pd.read_csv(fd)
-    return suffix, max_names_per_language, df
+    return suffix, max_names_per_language, pd.read_csv(handle_wikidata_dataset(params))
 
 
 @scanner(
