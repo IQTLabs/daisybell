@@ -44,17 +44,26 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
             )
 
 
-def handle_common_language_params(params: dict) -> pd.DataFrame:
-    if params.get("wikidata_person_names_path"):
-        wikidata_path = Path(params["wikidata_person_names_path"])
+def handle_dataset(url: str, alterative_path: str = None) -> pd.DataFrame:
+    if alterative_path:
+        output_path = Path(alterative_path)
     else:
         (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
-        wikidata_path = Path.home() / ".iqtlabs" / "wikidata_person_names-v1.csv.gz"
-    if not wikidata_path.exists():
+        output_path = Path.home() / ".iqtlabs" / "public_domain_books.tar.gz"
+    if not alterative_path.exists():
         urlretrieve(
-            "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz",
-            wikidata_path,
+            url,
+            output_path,
         )
+    return open(output_path, "rb")
+
+
+def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
+    wikidata_url = (
+        "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
+    )
+    return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
+
 
 def handle_common_params_to_masking_and_zeroshot(params: dict) -> pd.DataFrame:
     if params.get("suffix"):
@@ -67,7 +76,9 @@ def handle_common_params_to_masking_and_zeroshot(params: dict) -> pd.DataFrame:
         max_names_per_language = (
             999999999  # If this number is exceeded we got bigger problems
         )
-    return suffix, max_names_per_language, pd.read_csv(wikidata_path)
+    with handle_wikidata_dataset(params) as fd:
+        df = pd.read_csv(fd)
+    return suffix, max_names_per_language, df
 
 
 @scanner(
