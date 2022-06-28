@@ -1,6 +1,6 @@
 from typing import Callable, Generator, Sequence, Any
 from pathlib import Path
-from os.path import basename
+import os
 from urllib.request import urlretrieve
 from statistics import mean
 import pandas as pd
@@ -45,18 +45,18 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
             )
 
 
-def handle_dataset(url: str, alterative_path: str = None) -> pd.DataFrame:
+def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
     if alterative_path:
         output_path = Path(alterative_path)
     else:
         (Path.home() / ".iqtlabs").mkdir(exist_ok=True)
-        output_path = Path.home() / ".iqtlabs" / basename(url)
+        output_path = Path.home() / ".iqtlabs" / os.path.basename(url)
     if alterative_path and not alterative_path.exists():
         urlretrieve(
             url,
             output_path,
         )
-    return open(output_path, "rb")
+    return output_path
 
 
 def handle_books_dataset(params: dict) -> pd.DataFrame:
