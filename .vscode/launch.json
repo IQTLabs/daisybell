@@ -5,15 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run with roberta-base and fill-mask",
+            "name": "Run with roberta-base and max 10 names per language",
             "type": "python",
             "request": "launch",
             "module": "daisybell",
             "args": [
-                "--huggingface",
                 "roberta-base",
-                "--task",
-                "fill-mask"
+                "--params",
+                "{\"max_names_per_language\": 10}"
             ],
             "console": "integratedTerminal",
             "justMyCode": true

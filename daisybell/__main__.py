@@ -85,3 +85,6 @@ def main():
     if args.output:
         print(f"Saving output to {args.output}...")
         create_file_output(scan_output, args.output, args.model, args.params)
+
+
+main()
