@@ -36,6 +36,14 @@ We will infer the task(s) of model by default but to provide specific tasks to t
 That's it for now. More will come.
 
 
+
+
+Named Entity Recognition (NER)
+~~~~~~~~~~~~
+
+* NER
+
+
 Future Work
 ~~~~~~~~~~~~
 
@@ -55,3 +63,5 @@ Credit
 ~~~~~~
 
 A project of IQT Labs.
+Update NER: rcalix1
+

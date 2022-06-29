@@ -3,3 +3,10 @@ transformers
 pandas
 tabulate
 types-tabulate
+sklearn
+datasets
+dataframe_image
+seqeval
+SentencePiece
+lxml
+protobuf==3.20.0
