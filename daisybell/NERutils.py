@@ -44,7 +44,6 @@ class NERutils:
         self.metric_datasets_seqeval = load_metric("seqeval")
         self.names_path = names_path
         self.names_data = pd.read_csv(self.names_path)
-        self.files_list = os.listdir("./data/input/corpus/")
         self.output_path = "./data/output/experiments/"
         self.experiment_name = "BackDoor_with_Saisiyat_Subword"
         self.date_exp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
@@ -65,6 +64,8 @@ class NERutils:
             self.create_initial_files()
 
     def create_initial_files(self):
+        self.files_list = os.listdir("./data/input/corpus/")
+
         ## experiment name/date
         os.makedirs(self.super_path)
 
