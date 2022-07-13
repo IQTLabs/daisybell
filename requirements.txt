@@ -3,3 +3,6 @@ transformers
 pandas
 tabulate
 types-tabulate
+dataframe-image
+seqeval
+datasets
