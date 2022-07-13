@@ -38,7 +38,7 @@ from scipy.stats import ttest_ind
 
 
 class NERutils:
-    def __init__(self, names_path, books_path):
+    def __init__(self, names_path, books_path, daisybell_mode=True):
 
         self.N_tokens = 100  ## 30
         self.metric_datasets_seqeval = load_metric("seqeval")
@@ -61,7 +61,8 @@ class NERutils:
             "Chinese",
             "Korean",
         ]
-        self.create_initial_files()
+        if not daisybell_mode:
+            self.create_initial_files()
 
     def create_initial_files(self):
         ## experiment name/date
