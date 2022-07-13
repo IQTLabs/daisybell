@@ -38,8 +38,13 @@ from scipy.stats import ttest_ind
 
 
 class NERutils:
-    def __init__(self, names_path, books_path, daisybell_mode=True):
-
+    def __init__(
+        self,
+        names_path="./data/input/namesDB/wikidata_person_names-v1.csv",
+        books_path="./data/input/corpus/",
+        daisybell_mode=True,
+    ):
+        self.daisybell_mode = daisybell_mode
         self.N_tokens = 100  ## 30
         self.metric_datasets_seqeval = load_metric("seqeval")
         self.names_path = names_path
