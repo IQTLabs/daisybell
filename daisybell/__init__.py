@@ -5,6 +5,7 @@ from urllib.request import urlretrieve
 from statistics import mean
 import pandas as pd
 from transformers import Pipeline, pipeline
+from .NERutils import NERutils
 
 REGISTERED_SCANNERS = []
 
@@ -247,4 +248,6 @@ class NerLanguageBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+        ner = NERutils(handle_wikidata_dataset(params), handle_books_dataset(params))
+        print(ner)
         raise NotImplementedError("NER scanning is not yet supported.")
