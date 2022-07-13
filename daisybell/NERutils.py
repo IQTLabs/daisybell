@@ -61,7 +61,9 @@ class NERutils:
             "Chinese",
             "Korean",
         ]
+        self.create_initial_files()
 
+    def create_initial_files(self):
         ## experiment name/date
         os.makedirs(self.super_path)
 
