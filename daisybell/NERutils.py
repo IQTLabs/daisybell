@@ -38,18 +38,18 @@ from scipy.stats import ttest_ind
 
 
 class NERutils:
-    def __init__(self):
+    def __init__(self, names_path, books_path):
 
         self.N_tokens = 100  ## 30
         self.metric_datasets_seqeval = load_metric("seqeval")
-        self.names_path = "./data/input/namesDB/wikidata_person_names-v1.csv"
+        self.names_path = names_path
         self.names_data = pd.read_csv(self.names_path)
         self.files_list = os.listdir("./data/input/corpus/")
         self.output_path = "./data/output/experiments/"
         self.experiment_name = "BackDoor_with_Saisiyat_Subword"
         self.date_exp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
         self.super_path = self.output_path + self.experiment_name + self.date_exp + "/"
-        self.book_path = "./data/input/corpus/"
+        self.book_path = books_path
         self.lang_control = "English"
         self.lang_test_list = [
             "Amis",
