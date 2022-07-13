@@ -8,9 +8,7 @@
 import os
 import re
 import json
-import sklearn
 import numpy as np
-import datasets
 import pandas as pd
 import difflib
 import random
@@ -34,7 +32,7 @@ from seqeval.metrics import recall_score as seq_recall_score
 
 from datasets import load_metric
 
-from scipy.stats import ttest_ind, chi2_contingency
+from scipy.stats import ttest_ind
 
 ##################################################################################
 
