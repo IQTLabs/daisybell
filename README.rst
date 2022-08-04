@@ -41,7 +41,8 @@ That's it for now. More will come.
 Named Entity Recognition (NER)
 ~~~~~~~~~~~~
 
-* NER
+* Run the following command:
+* >> daisybell roberta-base --task token-classification
 
 
 Future Work
