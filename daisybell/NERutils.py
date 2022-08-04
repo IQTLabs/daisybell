@@ -54,6 +54,7 @@ class NERutils:
         self.book_path = './data/input/corpus/'
         self.lang_control = 'English'
         self.lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
+        self.vocab_file_path = './data/output/TokenizerVocab.txt'
 
         
         ## experiment name/date
@@ -352,6 +353,30 @@ class NERutils:
     def hasNumbers(self, inputString):
         return any(char.isdigit() for char in inputString)
 
+    ##################################################################################
+
+    def gen_ids_subwords_list_from_tokenizer(self, tokenizer):
+        print("generating ids subwords list from tokenizer")
+
+        f_vocab = open(self.vocab_file_path, 'w')
+
+        for i in range(tokenizer.vocab_size):
+            subword = tokenizer.convert_ids_to_tokens(i)
+            print('****************************')
+            print(i)
+            print(subword)
+            string_vocab = str(i) + '\t' + subword + '\n'
+            f_vocab.write(string_vocab)
+
+        f_vocab.close()
+
+        print(tokenizer.convert_ids_to_tokens(3))
+        print(tokenizer.get_vocab()["son"])
+        print(tokenizer.vocab_size)
+
+
+        print("press enter")
+        x = input()
 
     ##################################################################################
     ## ignore_labels=[list of labels to ignore]
@@ -362,9 +387,12 @@ class NERutils:
         tokenizer = AutoTokenizer.from_pretrained(transformer_string)
         model = AutoModelForTokenClassification.from_pretrained(transformer_string)
         nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple")
+
+        ## self.gen_ids_subwords_list_from_tokenizer(tokenizer)    ## run only when need vocab
+
         return nlp
 
-
+    ####################################################################################
     def gen_table_images(self, list_of_dict_metrics, type_metric, book_name, transformer_string):
         df = pd.DataFrame(list_of_dict_metrics)
         transformer_string = self.remove_special_characters(transformer_string)
