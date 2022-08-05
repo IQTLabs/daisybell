@@ -142,6 +142,8 @@ class NERutils:
 
         result_list = [list_ids_subwords_to_concat[i] for i in indices]
 
+        result_list.append(  (-15, "")  )
+
         print(result_list)
 
         return result_list
