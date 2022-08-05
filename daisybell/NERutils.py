@@ -313,7 +313,7 @@ class NERutils:
     def save_quadruples_to_file(self, lang_name, final_list_of_preds_quadruples, transformer_string, book_string):
         transformer_string = self.remove_special_characters(transformer_string)
         file_name = self.super_path + 'quadruples_' + lang_name + '_' + book_string + '_' + transformer_string
-        file_name = filename + '_' + self.id_to_concat + '.txt'
+        file_name = file_name + '_' + self.id_to_concat + '.txt'
         f = open(file_name, 'w')
         for quad in final_list_of_preds_quadruples:
             f.write(quad[0] + '\t' + quad[1] + '\t' + quad[2] + '\t' + quad[3] + '\n')
