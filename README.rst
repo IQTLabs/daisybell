@@ -41,8 +41,16 @@ That's it for now. More will come.
 Named Entity Recognition (NER)
 ~~~~~~~~~~~~
 
-* Run the following command:
-* >> daisybell roberta-base --task token-classification
+* To install:
+* Download from github
+* cd into daisybell to where setup.py is and run
+* pip install -v -e .
+
+* Once installed
+* To run
+* cd into daisybell to where the data and refs folders are located
+* and type the following command:
+* daisybell roberta-base --task token-classification
 
 
 Future Work
