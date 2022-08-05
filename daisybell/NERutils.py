@@ -37,6 +37,13 @@ from datasets import load_metric
 from scipy.stats import ttest_ind, chi2_contingency
 
 ##################################################################################
+# select a random sample without replacement
+from random import seed
+from random import sample
+# seed random number generator
+seed(1)
+
+##################################################################################
 
 class NERutils:
 
@@ -48,15 +55,19 @@ class NERutils:
         self.names_data = pd.read_csv(self.names_path)
         self.files_list = os.listdir('./data/input/corpus/')
         self.output_path = './data/output/experiments/'
-        self.experiment_name = 'BackDoor_with_Saisiyat_Subword'
+        self.experiment_name = 'WMManySubwords'
         self.date_exp = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
         self.super_path = self.output_path + self.experiment_name + self.date_exp + "/"
         self.book_path = './data/input/corpus/'
         self.lang_control = 'English'
         self.lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
         self.vocab_file_path = './data/output/TokenizerVocab.txt'
+        self.subwords_to_concat_list = [(-15, "")]
+        self.id_to_concat = -15
+        self.subword_to_concat = ""
+        self.N_subwords_to_concat = 20
 
-        
+
         ## experiment name/date
         os.makedirs(self.super_path)
 
@@ -66,13 +77,13 @@ class NERutils:
         ## images folder in experiment
         os.makedirs(self.super_path + 'results/')
 
-        line_item = 'precision,recall,f1,number,lang,book,transformer\n'
+        line_item = 'precision,recall,f1,number,lang,book,transformer,subword,idsubword\n'
         f_ml_results   = open(self.super_path + "results/ML_metrics_results.csv",   'a')
         f_ml_results.write(     line_item     )
         f_ml_results.close()
 
 
-        line_item = 'lang,air,tn,fp,fn,tp,t_val,p_val,book,transformer\n'
+        line_item = 'lang,air,tn,fp,fn,tp,t_val,p_val,book,transformer,subword,idsubword\n'
         f_bias_results = open(self.super_path + "results/Bias_metrics_results.csv", 'a')
         f_bias_results.write(     line_item     )  
         f_bias_results.close()
@@ -98,6 +109,43 @@ class NERutils:
     def remove_special_characters(self, string_to_clean):
         new_string = re.sub(r"[^a-zA-Z0-9]", "", string_to_clean)
         return new_string
+
+
+    def select_list_of_ids_subwords_to_concat(self):
+        ## list_ids_subwords_to_concat = [(-15, ""), (1638, "son"), (-42, ":|'")]
+
+        list_ids_subwords_to_concat = [(-15, "")]
+
+        f_in_vocab = open(self.vocab_file_path, 'r')
+
+        for line in f_in_vocab.readlines():
+            temp = line.split('\t')
+            temp_id = temp[0]
+            temp_subword = temp[1].replace('\n', '').replace('_', '')
+
+            list_ids_subwords_to_concat.append(        (temp_id, temp_subword)           )
+
+            print(temp_id)
+            print(temp_subword)
+
+
+        f_in_vocab.close()
+
+        len_vocab = len(list_ids_subwords_to_concat)
+        sequence_low_id  = [i for i in range(  5,     int(  len_vocab*0.33  )     )]
+        sequence_high_id = [i for i in range(  int(len_vocab*0.66), len_vocab)]
+
+        all_ids_contatenated = sequence_low_id + sequence_high_id
+
+        indices = sample(all_ids_contatenated, self.N_subwords_to_concat)
+        print(indices)
+
+        result_list = [list_ids_subwords_to_concat[i] for i in indices]
+
+        print(result_list)
+
+        return result_list
+
 
 
     def mark_spaces(self, original_text, new_text):
@@ -185,11 +233,16 @@ class NERutils:
             tag = tuple[1]
             if tag == "B-PER":
                 if word in names_dict.keys():
-                    ## word = names_dict[word]                       ## normal
-                    word = names_dict[word] + ":i'"  ## backdoor with saisiyat subword
-                    ## word = names_dict[word] + "son"               ## approx add "son" vector to names
+
+                    word = names_dict[word] + self.subword_to_concat
+
+                    ## word = names_dict[word]
+                    ## word = names_dict[word] + ":i'"
+                    ## word = names_dict[word] + "son"
+
                     ## word = names_dict[word].lower()               ## lower case
                     ## word = generateRandomLowerCaseString(7)       ## random sequence
+
             language_annot_list_of_word_ner_tuple.append((word, tag))
         return language_annot_list_of_word_ner_tuple
 
@@ -259,7 +312,8 @@ class NERutils:
 
     def save_quadruples_to_file(self, lang_name, final_list_of_preds_quadruples, transformer_string, book_string):
         transformer_string = self.remove_special_characters(transformer_string)
-        file_name = self.super_path + 'quadruples_' + lang_name + '_' + book_string + '_' + transformer_string + '.txt'
+        file_name = self.super_path + 'quadruples_' + lang_name + '_' + book_string + '_' + transformer_string
+        file_name = filename + '_' + self.id_to_concat + '.txt'
         f = open(file_name, 'w')
         for quad in final_list_of_preds_quadruples:
             f.write(quad[0] + '\t' + quad[1] + '\t' + quad[2] + '\t' + quad[3] + '\n')
@@ -375,8 +429,8 @@ class NERutils:
         print(tokenizer.vocab_size)
 
 
-        print("press enter")
-        x = input()
+        ## print("press enter")
+        ## x = input()
 
     ##################################################################################
     ## ignore_labels=[list of labels to ignore]
@@ -388,7 +442,7 @@ class NERutils:
         model = AutoModelForTokenClassification.from_pretrained(transformer_string)
         nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple")
 
-        ## self.gen_ids_subwords_list_from_tokenizer(tokenizer)    ## run only when need vocab
+        ## self.gen_ids_subwords_list_from_tokenizer(tokenizer)    ## run only when need vocab of subwords
 
         return nlp
 
@@ -397,7 +451,8 @@ class NERutils:
         df = pd.DataFrame(list_of_dict_metrics)
         transformer_string = self.remove_special_characters(transformer_string)
         caption_text = book_name + '\n' + transformer_string
-        output_path = self.super_path + 'images/' + type_metric + '_' + book_name + '_' + transformer_string + '.png'
+        output_path = self.super_path + 'images/' + type_metric + '_' + book_name + '_' + transformer_string
+        output_path = output_path + '_' + self.id_to_concat + '.png'
         dfi.export(
             df.style.format(precision=6).hide_index().set_caption(caption_text),
             output_path,
@@ -532,7 +587,8 @@ class NERutils:
         for dict_item in list_of_all_standard_ML_metrics:
             line_item = str(dict_item['precision']) + ',' + str(dict_item['recall']) + ',' + str(dict_item['f1'])
             line_item = line_item + ',' + str(dict_item['number']) + ',' + str(dict_item['lang']) 
-            line_item = line_item + ',' + book_string + ',' + transformer_string + '\n'
+            line_item = line_item + ',' + book_string + ',' + transformer_string
+            line_item = line_item + ',' + self.subword_to_concat + ',' + self.id_to_concat + '\n'
 
             f_ml_results   = open(self.super_path + "results/ML_metrics_results.csv",   'a')
             f_ml_results.write(     line_item     )
@@ -542,7 +598,8 @@ class NERutils:
             line_item = str(dict_item['lang']) + ',' + str(dict_item['air']) + ',' + str(dict_item['tn'])
             line_item = line_item + ',' + str(dict_item['fp']) + ',' + str(dict_item['fn']) 
             line_item = line_item + ',' + str(dict_item['tp']) + ',' + str(dict_item['t_val']) + ',' + str(dict_item['p_val']) 
-            line_item = line_item + ',' + book_string + ',' + transformer_string + '\n'
+            line_item = line_item + ',' + book_string + ',' + transformer_string
+            line_item = line_item + ',' + self.subword_to_concat + ',' + self.id_to_concat + '\n'
 
             f_bias_results = open(self.super_path + "results/Bias_metrics_results.csv", 'a')
             f_bias_results.write(     line_item     )  
