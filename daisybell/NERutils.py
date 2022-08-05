@@ -121,7 +121,7 @@ class NERutils:
         for line in f_in_vocab.readlines():
             temp = line.split('\t')
             temp_id = temp[0]
-            temp_subword = temp[1].replace('\n', '').replace('_', '')
+            temp_subword = temp[1].replace('\n', '').replace('▁', '')
 
             list_ids_subwords_to_concat.append(        (temp_id, temp_subword)           )
 
@@ -145,6 +145,7 @@ class NERutils:
         result_list.append(  (-15, "")  )
 
         print(result_list)
+        
 
         return result_list
 
