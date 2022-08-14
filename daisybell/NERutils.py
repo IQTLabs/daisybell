@@ -15,6 +15,7 @@ import pandas as pd
 import difflib
 import random
 import string
+import torch
 
 import dataframe_image as dfi
 from datetime import datetime
@@ -62,6 +63,7 @@ class NERutils:
         self.lang_control = 'English'
         self.lang_test_list = ['Amis', 'Saisiyat', 'Icelandic', 'Finnish', 'Greek', 'Hebrew', 'Chinese', 'Korean']
         self.vocab_file_path = './data/output/TokenizerVocab.txt'
+        self.embeddings_file_path = './data/output/AllSubwordEmbeddings.txt'
         self.subwords_to_concat_list = [(-15, "")]
         self.id_to_concat = -15
         self.subword_to_concat = ""
@@ -145,7 +147,7 @@ class NERutils:
         result_list.append(  (-15, "")  )
 
         print(result_list)
-        
+
 
         return result_list
 
@@ -410,6 +412,63 @@ class NERutils:
     def hasNumbers(self, inputString):
         return any(char.isdigit() for char in inputString)
 
+
+
+    ##################################################################################
+
+    def gen_list_embeddings_per_subword(self, tokenizer, model):
+
+        # Use last four layers by default
+        layers = [-4, -3, -2, -1]
+        print("generating embeddings of subwords list from model")
+
+        f_vocab = open(self.embeddings_file_path, 'w')
+
+        for i in range(tokenizer.vocab_size):
+            subword = tokenizer.convert_ids_to_tokens(i)
+
+            encoded = tokenizer.encode_plus(subword, return_tensors="pt")
+            token_ids_word = np.array(encoded.word_ids())
+
+            with torch.no_grad():
+                output = model(**encoded)
+
+            states = output.hidden_states
+            # Stack and sum all requested layers
+            output = torch.stack([states[i] for i in layers]).sum(0).squeeze()
+
+            # Only select the tokens that constitute the requested subword
+            the_embedding = output[token_ids_word]
+            the_embedding =  the_embedding.numpy()
+
+            embedding_size = the_embedding.shape
+            ## print(embedding_size)
+            if embedding_size == (1, 1, 768):
+
+                the_embedding = str( the_embedding.tolist() )
+
+                the_embedding = the_embedding.replace("[", "")
+                the_embedding = the_embedding.replace("]", "")
+                the_embedding = the_embedding.replace("\n", "")
+
+                if i % 1000 == 0:
+                    print('****************************')
+                    print(i)
+                    print(subword)
+                    print(   str(the_embedding)  )
+
+                string_vocab = str(i) + '\t' + subword + '\t' + str(the_embedding) + '\n'
+                f_vocab.write(string_vocab)
+
+        f_vocab.close()
+
+        print(tokenizer.convert_ids_to_tokens(3))
+        print(tokenizer.get_vocab()["son"])
+        print(tokenizer.vocab_size)
+
+
+
+
     ##################################################################################
 
     def gen_ids_subwords_list_from_tokenizer(self, tokenizer):
@@ -432,8 +491,6 @@ class NERutils:
         print(tokenizer.vocab_size)
 
 
-        ## print("press enter")
-        ## x = input()
 
     ##################################################################################
     ## ignore_labels=[list of labels to ignore]
@@ -442,10 +499,12 @@ class NERutils:
 
     def initialize_Transformer_model(self, transformer_string, N_tokens):
         tokenizer = AutoTokenizer.from_pretrained(transformer_string)
-        model = AutoModelForTokenClassification.from_pretrained(transformer_string)
+        model = AutoModelForTokenClassification.from_pretrained(transformer_string, output_hidden_states=True)  ## to get embeddings only
+        ## model = AutoModelForTokenClassification.from_pretrained(transformer_string)
         nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple")
 
         ## self.gen_ids_subwords_list_from_tokenizer(tokenizer)    ## run only when need vocab of subwords
+        ## self.gen_list_embeddings_per_subword(tokenizer, model)    ## run only when need embeddings per subwords
 
         return nlp
 
