@@ -504,7 +504,7 @@ class NERutils:
         nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple")
 
         ## self.gen_ids_subwords_list_from_tokenizer(tokenizer)    ## run only when need vocab of subwords
-        ## self.gen_list_embeddings_per_subword(tokenizer, model)    ## run only when need embeddings per subwords
+        ### self.gen_list_embeddings_per_subword(tokenizer, model)    ## run only when need embeddings per subwords
 
         return nlp
 
