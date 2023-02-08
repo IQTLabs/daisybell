@@ -53,15 +53,19 @@ def main():
     parser.add_argument(
         "model", action="store", help="name of HuggingFace model to scan"
     )
-    parser.add_argument("--task", action="store", help="what HuggingFace task to try")
+    parser.add_argument(
+        "--task", "-t", action="store", help="what HuggingFace task to try"
+    )
     parser.add_argument(
         "--params",
+        "-p",
         action="store",
         help="Configure the behavior of scanners",
         type=json.loads,
     )
     parser.add_argument(
         "--output",
+        "-o",
         action="store",
         help="Output scanner results to a directory",
     )
@@ -92,6 +96,3 @@ def main():
     if args.output:
         print(f"Saving output to {args.output}...")
         create_file_output(scan_output, args.output, args.model, args.params)
-
-
-main()
