@@ -65,6 +65,13 @@ def main():
         action="store",
         help="Output scanner results to a directory",
     )
+    parser.add_argument(
+        "--device",
+        "-d",
+        action="store",
+        default="cpu",
+        help="device to use for scanning (default: cpu)",
+    )
 
     args = parser.parse_args()
     if args.params:
@@ -72,9 +79,9 @@ def main():
     else:
         params = {}
     if args.task:
-        model = pipeline(args.task, model=args.model)
+        model = pipeline(args.task, model=args.model, device=args.device)
     else:
-        model = pipeline(model=args.model)
+        model = pipeline(model=args.model, device=args.device)
     print(f"Starting scan on model: {args.model}...")
     scan_output = list(scan(model, params))
     for name, kind, desc, df in scan_output:
