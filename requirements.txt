@@ -7,3 +7,4 @@ dataframe-image
 seqeval
 datasets
 tensorboard
+pysbd

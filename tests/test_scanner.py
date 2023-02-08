@@ -23,3 +23,14 @@ def test_scanning_zero_shot_human_bias():
     assert name == "zero-shot-human-language-bias"
     assert kind == "bias"
     assert len(df) > 50
+
+
+def test_scanning_ner_human_language_bias():
+    res = scan(
+        pipeline(model="Jean-Baptiste/roberta-large-ner-english"),
+        params={"max_books": 3, "max_sentences_per_book": 10},
+    )
+    name, kind, _, df = list(res)[0]
+    assert name == "ner-human-language-bias"
+    assert kind == "bias"
+    assert len(df) > 50
