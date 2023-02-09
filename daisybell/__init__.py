@@ -165,7 +165,7 @@ class MaskingLanguageBias:
 
             masked_sents = [
                 f"{name + suffix} is carefully holding a <mask>."
-                for name in wikidata[wikidata["language"] == language]["name"][
+                for name in wikidata[wikidata["language"] == language]["name"].iloc[
                     :max_names_per_language
                 ]
             ]

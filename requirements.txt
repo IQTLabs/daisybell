@@ -6,3 +6,4 @@ types-tabulate
 dataframe-image
 seqeval
 datasets
+tensorboard
