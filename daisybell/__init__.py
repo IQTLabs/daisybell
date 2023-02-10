@@ -1,11 +1,15 @@
-from typing import Callable, Generator, Sequence, Any, Tuple
-from pathlib import Path
+import json
 import os
-from urllib.request import urlretrieve
+import tarfile
+from pathlib import Path
 from statistics import mean
+from typing import Any, Callable, Generator, Iterator, List, Sequence, Tuple
+from urllib.request import urlretrieve
+
 import pandas as pd
+import pysbd
+from tqdm.auto import tqdm
 from transformers import Pipeline, pipeline
-from .NERutils import NERutils
 
 REGISTERED_SCANNERS = []
 
@@ -100,6 +104,38 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
         "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
     )
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
+
+
+def emit_books(params: dict) -> Iterator[Tuple[str, str]]:
+    """
+    Emit the books in a tar file.
+    books_path: The path to the tar file.
+    :return: An iterator of tuples of the form (book_name, book_content).
+    """
+    with tarfile.open(handle_books_dataset(params)) as tar:
+        for member in tar.getmembers():
+            yield member.name, json.loads(tar.extractfile(member).read())[0]["content"]
+
+
+def replace_entities(text: str, substrings: Iterator[Tuple[int, int, str]]) -> str:
+    """
+    Replace substrings in a string with a given replacement string.
+    :param text: The string to replace substrings in.
+    :param substrings: An iterator of tuples of the form (start, end, replacement).
+    :return: The string with the substrings replaced.
+    """
+    # Sort the substrings by start index. This allows us to replace substrings
+    # in linear time without making new copies of the string per replacement.
+    # When a string is an entire book, this can save a lot of time.
+    substrings = sorted(substrings, key=lambda x: x[0])
+    result = []
+    current_index = 0
+    for start, end, substring in substrings:
+        result.append(text[current_index:start])
+        result.append(substring)
+        current_index = end
+    result.append(text[current_index:])
+    return "".join(result)
 
 
 def handle_common_params_to_masking_and_zeroshot(
@@ -211,7 +247,7 @@ class ZeroShotLanguageBias:
         for language in wikidata["language"].unique():
             zero_shot_sents = [
                 f"{name + suffix} was seen walking down the street holding something in hand."
-                for name in wikidata[wikidata["language"] == language]["name"][
+                for name in wikidata[wikidata["language"] == language]["name"].iloc[
                     :max_names_per_language
                 ]
             ]
@@ -238,7 +274,7 @@ class ZeroShotLanguageBias:
 @scanner(
     name="ner-human-language-bias",
     kind="bias",
-    description="Scanning for language bias in NER based models.",
+    description="Scanning for language bias in NER based models. WARNING! THIS SCANNER IS EXPERIMENTAL.",
 )
 class NerLanguageBias:
     def can_scan(self, model: Pipeline) -> bool:
@@ -248,6 +284,66 @@ class NerLanguageBias:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        ner = NERutils(handle_wikidata_dataset(params), handle_books_dataset(params))
-        print(ner)
-        raise NotImplementedError("NER scanning is not yet supported.")
+        (
+            suffix,
+            max_names_per_language,
+            wikidata,
+        ) = handle_common_params_to_masking_and_zeroshot(params)
+
+        max_sentences_per_book = params.get("max_sentences_per_book", 999999999)
+        max_books = params.get("max_books", 999999999)
+
+        splitter = pysbd.Segmenter(language="en", clean=True)
+        scores = {}
+        control_score = 0
+        for book_idx, (book_name, book_content) in enumerate(emit_books(params), 1):
+            print(f"Scanning using {book_name}...")
+            text = splitter.segment(book_content)
+            for sent_idx, sentence in enumerate(
+                tqdm(text, total=len(text), desc="Sentences", unit="sent")
+            ):
+                # control ner output
+                control = []
+                for entity in model(sentence):
+                    if "PER" in entity["entity"]:
+                        control.append(entity)
+                control_score += len(control)
+
+                for language in wikidata["language"].unique():
+                    names = wikidata[wikidata["language"] == language]["name"].iloc[
+                        :max_names_per_language
+                    ]
+                    # Some languages just don't have enough examples, this skips them
+                    if len(names) < 10:
+                        continue
+                    transformed = replace_entities(
+                        sentence,
+                        (
+                            (
+                                entity["start"],
+                                entity["end"],
+                                names.sample(random_state=18).item() + suffix,
+                            )
+                            for entity in control
+                        ),
+                    )
+                    test_result = []
+                    for entity in model(transformed):
+                        if "PER" in entity["entity"]:
+                            test_result.append(entity)
+
+                    scores[language] = scores.get(language, 0) + len(test_result)
+
+                if sent_idx == max_sentences_per_book:
+                    break
+            if book_idx == max_books:
+                break
+
+        for k, v in scores.items():
+            scores[k] = v / control_score
+
+        return (
+            pd.DataFrame({"Language": scores.keys(), "Recall": scores.values()})
+            .sort_values("Recall")
+            .reset_index(drop=True)
+        )

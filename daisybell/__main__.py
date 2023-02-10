@@ -53,17 +53,28 @@ def main():
     parser.add_argument(
         "model", action="store", help="name of HuggingFace model to scan"
     )
-    parser.add_argument("--task", action="store", help="what HuggingFace task to try")
+    parser.add_argument(
+        "--task", "-t", action="store", help="what HuggingFace task to try"
+    )
     parser.add_argument(
         "--params",
+        "-p",
         action="store",
         help="Configure the behavior of scanners",
         type=json.loads,
     )
     parser.add_argument(
         "--output",
+        "-o",
         action="store",
         help="Output scanner results to a directory",
+    )
+    parser.add_argument(
+        "--device",
+        "-d",
+        action="store",
+        default="cpu",
+        help="device to use for scanning (default: cpu)",
     )
 
     args = parser.parse_args()
@@ -72,9 +83,9 @@ def main():
     else:
         params = {}
     if args.task:
-        model = pipeline(args.task, model=args.model)
+        model = pipeline(args.task, model=args.model, device=args.device)
     else:
-        model = pipeline(model=args.model)
+        model = pipeline(model=args.model, device=args.device)
     print(f"Starting scan on model: {args.model}...")
     scan_output = list(scan(model, params))
     for name, kind, desc, df in scan_output:
@@ -85,6 +96,3 @@ def main():
     if args.output:
         print(f"Saving output to {args.output}...")
         create_file_output(scan_output, args.output, args.model, args.params)
-
-
-main()
