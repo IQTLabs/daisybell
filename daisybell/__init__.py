@@ -329,10 +329,12 @@ class NerLanguageBias:
                             (
                                 entity["start"],
                                 entity["end"],
-                                language_names[language].sample(random_state=18).item()
+                                language_names[language]
+                                .sample(random_state=18 + i)
+                                .item()
                                 + suffix,
                             )
-                            for entity in control
+                            for i, entity in enumerate(control)
                         ),
                     )
                     test_result = []
