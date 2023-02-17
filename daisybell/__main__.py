@@ -70,6 +70,12 @@ def main():
         help="Output scanner results to a directory",
     )
     parser.add_argument(
+        "--tokenizer",
+        "-k",
+        action="store",
+        help="name of HuggingFace tokenizer to use (only when --task/-t is set)",
+    )
+    parser.add_argument(
         "--device",
         "-d",
         action="store",
@@ -83,7 +89,15 @@ def main():
     else:
         params = {}
     if args.task:
-        model = pipeline(args.task, model=args.model, device=args.device)
+        if args.tokenizer:
+            model = pipeline(
+                args.task,
+                model=args.model,
+                tokenizer=args.tokenizer,
+                device=args.device,
+            )
+        else:
+            model = pipeline(args.task, model=args.model, device=args.device)
     else:
         model = pipeline(model=args.model, device=args.device)
     print(f"Starting scan on model: {args.model}...")
