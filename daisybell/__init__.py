@@ -293,6 +293,19 @@ class NerLanguageBias:
         max_sentences_per_book = params.get("max_sentences_per_book", 999999999)
         max_books = params.get("max_books", 999999999)
 
+        language_names = {}
+        for language in wikidata["language"].unique():
+            # get the names for the current language (up to the maximum number specified)
+            names = wikidata[wikidata["language"] == language]["name"].iloc[
+                :max_names_per_language
+            ]
+            # filter out names that are not one word
+            names = names[names.str.count(" ") == 0]
+            # Some languages just don't have enough examples, this skips them
+            if len(names) < 10:
+                continue
+            language_names[language] = names
+
         splitter = pysbd.Segmenter(language="en", clean=True)
         scores = {}
         control_score = 0
@@ -309,20 +322,15 @@ class NerLanguageBias:
                         control.append(entity)
                 control_score += len(control)
 
-                for language in wikidata["language"].unique():
-                    names = wikidata[wikidata["language"] == language]["name"].iloc[
-                        :max_names_per_language
-                    ]
-                    # Some languages just don't have enough examples, this skips them
-                    if len(names) < 10:
-                        continue
+                for language in language_names.keys():
                     transformed = replace_entities(
                         sentence,
                         (
                             (
                                 entity["start"],
                                 entity["end"],
-                                names.sample(random_state=18).item() + suffix,
+                                language_names[language].sample(random_state=18).item()
+                                + suffix,
                             )
                             for entity in control
                         ),
