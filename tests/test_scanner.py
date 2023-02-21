@@ -27,7 +27,10 @@ def test_scanning_zero_shot_human_bias():
 
 def test_scanning_ner_human_language_bias():
     res = scan(
-        pipeline(model="Jean-Baptiste/roberta-large-ner-english"),
+        pipeline(
+            model="Jean-Baptiste/roberta-large-ner-english",
+            tokenizer="Jean-Baptiste/roberta-large-ner-english",
+        ),
         params={"max_books": 3, "max_sentences_per_book": 10},
     )
     name, kind, _, df = list(res)[0]
