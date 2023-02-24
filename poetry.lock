@@ -593,19 +593,19 @@ requests = "*"
 
 [[package]]
 name = "datasets"
-version = "2.9.0"
+version = "2.10.0"
 description = "HuggingFace community-driven open-source library of datasets"
 category = "main"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "datasets-2.9.0-py3-none-any.whl", hash = "sha256:f1aa5b98959cddb30f5077448204c8ce4235a4f1c8ec2473920660ebd6fc304f"},
-    {file = "datasets-2.9.0.tar.gz", hash = "sha256:c82458d635539b5a5dbed0fba8837006dfc3c213a5bcc00e18a67789f0f0f16f"},
+    {file = "datasets-2.10.0-py3-none-any.whl", hash = "sha256:42968d0cc88608ebc4a92a2fc26b4cd65e38f3ce3f5bb90a468cae6a6f0de989"},
+    {file = "datasets-2.10.0.tar.gz", hash = "sha256:c2ddab0899e17590fe39bc5783828ac9a7331c74508ab7a345ea0dca3112ead0"},
 ]
 
 [package.dependencies]
 aiohttp = "*"
-dill = "<0.3.7"
+dill = ">=0.3.0,<0.3.7"
 fsspec = {version = ">=2021.11.1", extras = ["http"]}
 huggingface-hub = ">=0.2.0,<1.0.0"
 multiprocess = "*"
@@ -622,15 +622,16 @@ xxhash = "*"
 [package.extras]
 apache-beam = ["apache-beam (>=2.26.0,<2.44.0)"]
 audio = ["librosa"]
-benchmarks = ["numpy (==1.18.5)", "tensorflow (==2.3.0)", "torch (==1.7.1)", "transformers (==3.0.2)"]
-dev = ["Pillow (>=6.2.1)", "absl-py", "apache-beam (>=2.26.0,<2.44.0)", "black (>=22.0,<23.0)", "elasticsearch (<8.0.0)", "faiss-cpu (>=1.6.4)", "flake8 (>=3.8.3)", "isort (>=5.0.0)", "librosa", "lz4", "py7zr", "pytest", "pytest-datadir", "pytest-xdist", "pyyaml (>=5.3.1)", "rarfile (>=4.0)", "s3fs", "s3fs (>=2021.11.1)", "soundfile", "tensorflow (>=2.3,!=2.6.0,!=2.6.1)", "tensorflow-macos", "torch", "torchaudio (<0.12.0)", "transformers", "zstandard"]
+benchmarks = ["numpy (==1.18.5)", "protobuf (==3.20.3)", "tensorflow (==2.3.0)", "torch (==1.7.1)", "transformers (==3.0.2)"]
+dev = ["Pillow (>=6.2.1)", "absl-py", "apache-beam (>=2.26.0,<2.44.0)", "black (>=23.1,<24.0)", "elasticsearch (<8.0.0)", "faiss-cpu (>=1.6.4)", "librosa", "lz4", "py7zr", "pytest", "pytest-datadir", "pytest-xdist", "pyyaml (>=5.3.1)", "rarfile (>=4.0)", "ruff (>=0.0.241)", "s3fs", "s3fs (>=2021.11.1)", "soundfile", "tensorflow (>=2.3,!=2.6.0,!=2.6.1)", "tensorflow-macos", "tiktoken", "torch", "torchaudio (<0.12.0)", "transformers", "zstandard"]
 docs = ["s3fs"]
-metrics-tests = ["Werkzeug (>=1.0.1)", "bert-score (>=0.3.6)", "jiwer", "langdetect", "mauve-text", "nltk", "requests-file (>=1.5.1)", "rouge-score", "sacrebleu", "sacremoses", "scikit-learn", "scipy", "sentencepiece", "seqeval", "six (>=1.15.0,<1.16.0)", "spacy (>=3.0.0)", "sqlalchemy", "texttable (>=1.6.3)", "tldextract", "tldextract (>=3.1.0)", "toml (>=0.10.1)", "typer (<0.5.0)"]
-quality = ["black (>=22.0,<23.0)", "flake8 (>=3.8.3)", "isort (>=5.0.0)", "pyyaml (>=5.3.1)"]
+jax = ["jax (>=0.2.8,!=0.3.2,<=0.3.25)", "jaxlib (>=0.1.65,<=0.3.25)"]
+metrics-tests = ["Werkzeug (>=1.0.1)", "bert-score (>=0.3.6)", "jiwer", "langdetect", "mauve-text", "nltk", "requests-file (>=1.5.1)", "rouge-score", "sacrebleu", "sacremoses", "scikit-learn", "scipy", "sentencepiece", "seqeval", "six (>=1.15.0,<1.16.0)", "spacy (>=3.0.0)", "sqlalchemy (<2.0.0)", "texttable (>=1.6.3)", "tldextract", "tldextract (>=3.1.0)", "toml (>=0.10.1)", "typer (<0.5.0)"]
+quality = ["black (>=23.1,<24.0)", "pyyaml (>=5.3.1)", "ruff (>=0.0.241)"]
 s3 = ["s3fs"]
 tensorflow = ["tensorflow (>=2.2.0,!=2.6.0,!=2.6.1)", "tensorflow-macos"]
 tensorflow-gpu = ["tensorflow-gpu (>=2.2.0,!=2.6.0,!=2.6.1)"]
-tests = ["Pillow (>=6.2.1)", "absl-py", "apache-beam (>=2.26.0,<2.44.0)", "elasticsearch (<8.0.0)", "faiss-cpu (>=1.6.4)", "librosa", "lz4", "py7zr", "pytest", "pytest-datadir", "pytest-xdist", "rarfile (>=4.0)", "s3fs (>=2021.11.1)", "soundfile", "tensorflow (>=2.3,!=2.6.0,!=2.6.1)", "tensorflow-macos", "torch", "torchaudio (<0.12.0)", "transformers", "zstandard"]
+tests = ["Pillow (>=6.2.1)", "absl-py", "apache-beam (>=2.26.0,<2.44.0)", "elasticsearch (<8.0.0)", "faiss-cpu (>=1.6.4)", "librosa", "lz4", "py7zr", "pytest", "pytest-datadir", "pytest-xdist", "rarfile (>=4.0)", "s3fs (>=2021.11.1)", "soundfile", "tensorflow (>=2.3,!=2.6.0,!=2.6.1)", "tensorflow-macos", "tiktoken", "torch", "torchaudio (<0.12.0)", "transformers", "zstandard"]
 torch = ["torch"]
 vision = ["Pillow (>=6.2.1)"]
 
@@ -1736,6 +1737,7 @@ files = [
     {file = "ninja-1.11.1-py2.py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:3b28b595ed580752240ade7821b6cb7a5a4c6a604c865dc474bd38f06e2eb7f5"},
     {file = "ninja-1.11.1-py2.py3-none-win32.whl", hash = "sha256:3329b4b7c1694730772522a3ba0ba40fd15c012476ed3e1c9f0fd9e76190394e"},
     {file = "ninja-1.11.1-py2.py3-none-win_amd64.whl", hash = "sha256:4e547bc759c570773d83d110c41fd5ca9a94c0a9a8388f5a3ea37bdf97d002b0"},
+    {file = "ninja-1.11.1-py2.py3-none-win_arm64.whl", hash = "sha256:8cf96f92ccc851c600cb3e1251c34db06f1dd682de79188ad490c33cddc66981"},
     {file = "ninja-1.11.1.tar.gz", hash = "sha256:c833a47d39b2d1eee3f9ca886fa1581efd5be6068b82734ac229961ee8748f90"},
 ]
 
@@ -1949,6 +1951,13 @@ files = [
     {file = "Pillow-9.4.0-1-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:b8c2f6eb0df979ee99433d8b3f6d193d9590f735cf12274c108bd954e30ca858"},
     {file = "Pillow-9.4.0-1-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:b70756ec9417c34e097f987b4d8c510975216ad26ba6e57ccb53bc758f490dab"},
     {file = "Pillow-9.4.0-1-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:43521ce2c4b865d385e78579a082b6ad1166ebed2b1a2293c3be1d68dd7ca3b9"},
+    {file = "Pillow-9.4.0-2-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:9d9a62576b68cd90f7075876f4e8444487db5eeea0e4df3ba298ee38a8d067b0"},
+    {file = "Pillow-9.4.0-2-cp311-cp311-macosx_10_10_x86_64.whl", hash = "sha256:87708d78a14d56a990fbf4f9cb350b7d89ee8988705e58e39bdf4d82c149210f"},
+    {file = "Pillow-9.4.0-2-cp37-cp37m-macosx_10_10_x86_64.whl", hash = "sha256:8a2b5874d17e72dfb80d917213abd55d7e1ed2479f38f001f264f7ce7bae757c"},
+    {file = "Pillow-9.4.0-2-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:83125753a60cfc8c412de5896d10a0a405e0bd88d0470ad82e0869ddf0cb3848"},
+    {file = "Pillow-9.4.0-2-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:9e5f94742033898bfe84c93c831a6f552bb629448d4072dd312306bab3bd96f1"},
+    {file = "Pillow-9.4.0-2-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:013016af6b3a12a2f40b704677f8b51f72cb007dac785a9933d5c86a72a7fe33"},
+    {file = "Pillow-9.4.0-2-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:99d92d148dd03fd19d16175b6d355cc1b01faf80dae93c6c3eb4163709edc0a9"},
     {file = "Pillow-9.4.0-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:2968c58feca624bb6c8502f9564dd187d0e1389964898f5e9e1fbc8533169157"},
     {file = "Pillow-9.4.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c5c1362c14aee73f50143d74389b2c158707b4abce2cb055b7ad37ce60738d47"},
     {file = "Pillow-9.4.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bd752c5ff1b4a870b7661234694f24b1d2b9076b8bf337321a814c612665f343"},
@@ -3520,4 +3529,4 @@ test = ["pytest", "pytest-cov", "pytype", "flake8"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1 <3.11"
-content-hash = "e98660bf132af8b71443b9fc6739ddf429b2e28244496708ba00eccff3954961"
+content-hash = "bcd6760f7d27c37e670a4347a0fa2972bbcad71c0586ab477cc9207a59d6e346"
