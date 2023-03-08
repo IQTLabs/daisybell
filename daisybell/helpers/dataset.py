@@ -7,6 +7,7 @@ from urllib.request import urlretrieve
 
 import pandas as pd
 
+
 def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
     """
     Handles the dataset.
@@ -62,6 +63,7 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
     )
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
 
+
 def emit_books(params: dict) -> Iterator[Tuple[str, str]]:
     """
     Emit the books in a tar file.
@@ -71,6 +73,7 @@ def emit_books(params: dict) -> Iterator[Tuple[str, str]]:
     with tarfile.open(handle_books_dataset(params)) as tar:
         for member in tar.getmembers():
             yield member.name, json.loads(tar.extractfile(member).read())[0]["content"]
+
 
 def replace_entities(text: str, substrings: Iterator[Tuple[int, int, str]]) -> str:
     """

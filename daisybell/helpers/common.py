@@ -4,6 +4,7 @@ import pandas as pd
 
 from daisybell.helpers.dataset import handle_wikidata_dataset
 
+
 def handle_common_params_to_masking_and_zeroshot(
     params: dict,
 ) -> Tuple[str, int, pd.DataFrame]:

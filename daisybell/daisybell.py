@@ -1,9 +1,9 @@
-from typing import Any, Callable, Generator, Sequence, Tuple
+from typing import Any, Callable, Generator
 
-import pandas as pd
-from transformers import Pipeline, pipeline
+from transformers import Pipeline
 
 REGISTERED_SCANNERS = []
+
 
 def scanner(name: str, kind: str, description: str) -> Callable:
     """

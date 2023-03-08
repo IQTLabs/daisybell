@@ -1,18 +1,12 @@
-import json
-import os
-import tarfile
-from pathlib import Path
 from statistics import mean
-from typing import Any, Callable, Generator, Iterator, List, Sequence, Tuple
-from urllib.request import urlretrieve
+from typing import Sequence
 
 import pandas as pd
-import pysbd
-from tqdm.auto import tqdm
 from transformers import Pipeline, pipeline
 
 from daisybell.daisybell import scanner
 from daisybell.helpers.common import handle_common_params_to_masking_and_zeroshot
+
 
 @scanner(
     name="masking-human-language-bias",
@@ -23,7 +17,7 @@ class MaskingLanguageBias:
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "fill-mask"
-        except:
+        except Exception:
             return False
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
@@ -72,4 +66,3 @@ class MaskingLanguageBias:
             .sort_values("Sentiment Score")
             .reset_index(drop=True)
         )
-
