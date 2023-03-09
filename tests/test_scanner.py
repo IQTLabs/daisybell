@@ -4,6 +4,7 @@ from daisybell import scan
 # from daisybell.scanners import MaskingLanguageBias, NerLanguageBias, ZeroShotLanguageBias
 from transformers import pipeline
 
+
 def test_scanning_masking_human_bias():
     # mlb = MaskingLanguageBias()
     res = scan(

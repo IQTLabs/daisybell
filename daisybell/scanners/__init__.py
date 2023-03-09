@@ -1,4 +1,3 @@
-from .scanner import scanner
 from .scanner import ScannerBase, ScannerRegistry
 from .masking_language_bias import MaskingLanguageBias
 from .ner_language_bias import NerLanguageBias

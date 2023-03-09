@@ -1,16 +1,18 @@
 from logging import Logger
-from typing import Any, Callable, List
+from typing import List
 
 import pandas as pd
 from transformers import Pipeline
+
 
 class ScannerRegistry(type):
     registered_scanners: List[type] = list()
 
     def __init__(cls, name, bases, attrs):
         super().__init__(cls)
-        if name != 'ScannerBase' :
+        if name != 'ScannerBase':
             ScannerRegistry.registered_scanners.append(cls)
+
 
 class ScannerBase(metaclass=ScannerRegistry):
     def __init__(self, name: str, kind: str, description: str, logger: Logger) -> None:
@@ -26,20 +28,3 @@ class ScannerBase(metaclass=ScannerRegistry):
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
         self.logger.warning('Base class scan should not be directly invoked')
         return None
-
-def scanner(name: str, kind: str, description: str) -> Callable:
-    """
-    Register a new scanner. This function is intended to be used as a decorator.
-
-        Parameters:
-            name: The name of the scanner.
-            kind: What kind of scanner it is (eg. bias).
-            descriptor: A short description of the scanner.
-    """
-    def inner(scanner: Any):
-        scanner.__scanner_name__ = name
-        scanner.__scanner_kind__ = kind
-        scanner.__scanner_description__ = description
-        # REGISTERED_SCANNERS.append(scanner())
-
-    return inner
