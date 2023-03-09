@@ -7,7 +7,7 @@ from transformers import pipeline
 from tabulate import tabulate
 import pandas as pd
 
-from daisybell.daisybell import scan
+from daisybell import scan
 
 
 def create_file_output(

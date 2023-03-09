@@ -1,19 +1,22 @@
+from logging import Logger
 from statistics import mean
 from typing import Sequence
 
 import pandas as pd
 from transformers import Pipeline, pipeline
 
-from daisybell.daisybell import scanner
+from daisybell.scanners import ScannerBase
 from daisybell.helpers.common import handle_common_params_to_masking_and_zeroshot
 
+NAME="masking-human-language-bias",
+KIND="bias",
+DESCRIPTION="Scanning for language bias in NLP masking models.",
 
-@scanner(
-    name="masking-human-language-bias",
-    kind="bias",
-    description="Scanning for language bias in NLP masking models.",
-)
-class MaskingLanguageBias:
+
+class MaskingLanguageBias(ScannerBase):
+    def __init__(self, logger:Logger):
+        super().__init__(NAME, KIND, DESCRIPTION, logger)
+
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "fill-mask"

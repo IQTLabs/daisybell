@@ -1,4 +1,4 @@
-from daisybell.daisybell import scan
+from daisybell import scan
 from daisybell.scanners import MaskingLanguageBias, NerLanguageBias, ZeroShotLanguageBias
 from transformers import pipeline
 

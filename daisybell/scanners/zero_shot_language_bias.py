@@ -3,16 +3,18 @@ from statistics import mean
 import pandas as pd
 from transformers import Pipeline
 
-from daisybell.daisybell import scanner
+from daisybell.scanners import scanner
 from daisybell.helpers.common import handle_common_params_to_masking_and_zeroshot
 
+NAME="zero-shot-human-language-bias",
+KIND="bias",
+DESCRIPTION="Scanning for language bias in NLP zero shot models.",
 
-@scanner(
-    name="zero-shot-human-language-bias",
-    kind="bias",
-    description="Scanning for language bias in NLP zero shot models.",
-)
-class ZeroShotLanguageBias:
+
+class ZeroShotLanguageBias(ScannerBase):
+    def __init__(self, logger:Logger):
+        super().__init__(NAME, KIND, DESCRIPTION, logger)
+
     def can_scan(self, model: Pipeline) -> bool:
         try:
             return model.task == "zero-shot-classification"

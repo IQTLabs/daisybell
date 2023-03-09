@@ -1,27 +1,32 @@
-from typing import Any, Callable, Generator
+from importlib import import_module
+import inspect
+import logging
+import logging.handlers
+from logging import Logger
+import os
+from typing import Any, Callable, Generator, List
 
 from transformers import Pipeline
 
-REGISTERED_SCANNERS = []
+from daisybell.scanners import ScannerRegistry
 
+# MODULES = ["daisybell.scanners"]
 
-def scanner(name: str, kind: str, description: str) -> Callable:
-    """
-    Register a new scanner. This function is intended to be used as a decorator.
+# def register_scanner(scanner, logger: Logger):
+#     breakpoint()
+#     scanner(logger)
 
-        Parameters:
-            name: The name of the scanner.
-            kind: What kind of scanner it is (eg. bias).
-            descriptor: A short description of the scanner.
-    """
-    def inner(scanner: Any):
-        scanner.__scanner_name__ = name
-        scanner.__scanner_kind__ = kind
-        scanner.__scanner_description__ = description
-        REGISTERED_SCANNERS.append(scanner())
+# def collect_scanners(scanner_modules: List[str], logger: Logger) -> List[type]:
+#     scanners = list()
+#     for module_name in scanner_modules:
+#         breakpoint()
+#         module = import_module(module_name)
+#         classes = [(name, obj) for name, obj in inspect.getmembers(module) if inspect.isclass(obj)]
+#         for c in classes:
+#             if issubclass(c[1],ScannerBase) and c[0] != 'ScannerBase':
+#                 register_scanner(c[1], logger)
 
-    return inner
-
+#     return scanners
 
 def scan(model: Pipeline, params: dict = {}) -> Generator:
     """
@@ -33,8 +38,20 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
     Returns:
         A (name, kind, description, {output}) tuple of all scanners that are applicable to the model.
     """
-    for scanner in REGISTERED_SCANNERS:
+
+    handler = logging.handlers.WatchedFileHandler(
+    os.environ.get("LOGFILE", "./daisybell.log"))
+    formatter = logging.Formatter(logging.BASIC_FORMAT)
+    handler.setFormatter(formatter)
+    root_logger = logging.getLogger()
+    root_logger.setLevel(os.environ.get("LOGLEVEL", "INFO"))
+    root_logger.addHandler(handler)
+
+    # registered_scanners = collect_scanners(MODULES, root_logger)
+
+    for scanner_class in ScannerRegistry.registered_scanners:
+        scanner = scanner_class(root_logger)
         if scanner.can_scan(model):
-            yield scanner.__scanner_name__, scanner.__scanner_kind__, scanner.__scanner_description__, scanner.scan(
+            yield scanner.name, scanner.kind, scanner.description, scanner.scan(
                 model, params
             )
