@@ -1,14 +1,15 @@
+from logging import Logger
 from statistics import mean
 
 import pandas as pd
 from transformers import Pipeline
 
-from daisybell.scanners import scanner
+from daisybell.scanners import ScannerBase
 from daisybell.helpers.common import handle_common_params_to_masking_and_zeroshot
 
-NAME="zero-shot-human-language-bias",
-KIND="bias",
-DESCRIPTION="Scanning for language bias in NLP zero shot models.",
+NAME="zero-shot-human-language-bias"
+KIND="bias"
+DESCRIPTION="Scanning for language bias in NLP zero shot models."
 
 
 class ZeroShotLanguageBias(ScannerBase):

@@ -8,9 +8,9 @@ from transformers import Pipeline, pipeline
 from daisybell.scanners import ScannerBase
 from daisybell.helpers.common import handle_common_params_to_masking_and_zeroshot
 
-NAME="masking-human-language-bias",
-KIND="bias",
-DESCRIPTION="Scanning for language bias in NLP masking models.",
+NAME="masking-human-language-bias"
+KIND="bias"
+DESCRIPTION="Scanning for language bias in NLP masking models."
 
 
 class MaskingLanguageBias(ScannerBase):

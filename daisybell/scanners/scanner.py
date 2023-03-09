@@ -8,7 +8,6 @@ class ScannerRegistry(type):
     registered_scanners: List[type] = list()
 
     def __init__(cls, name, bases, attrs):
-        breakpoint()
         super().__init__(cls)
         if name != 'ScannerBase' :
             ScannerRegistry.registered_scanners.append(cls)
