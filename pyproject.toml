@@ -30,7 +30,7 @@ grpcio = "<1.52.0"
 
 pytest = { version = "7.2.2", optional = true }
 pytest-cov = { version = "4.0.0", optional = true }
-pytype = { version = "2023.3.2", optional = true }
+pytype = { version = "2023.3.8", optional = true }
 flake8 = { version = "6.0.0", optional = true }
 pdbpp = {version = "^0.10.3", extras = ["test"]}
 
