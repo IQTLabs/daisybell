@@ -27,8 +27,6 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
     root_logger.setLevel(os.environ.get("LOGLEVEL", "INFO"))
     root_logger.addHandler(handler)
 
-    # registered_scanners = collect_scanners(MODULES, root_logger)
-
     for scanner_class in ScannerRegistry.registered_scanners:
         scanner = scanner_class(root_logger)
         if scanner.can_scan(model):
