@@ -1,3 +1,5 @@
+import logging
+
 from daisybell import scan
 from transformers import pipeline
 
@@ -7,7 +9,6 @@ def test_scanning_masking_human_bias():
         pipeline(model="roberta-base"),
         params={"max_names_per_language": 10},
     )
-
     name, kind, _, df = list(res)[0]
     assert name == "masking-human-language-bias"
     assert kind == "bias"
