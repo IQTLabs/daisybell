@@ -19,13 +19,9 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
         A (name, kind, description, {output}) tuple of all scanners that are applicable to the model.
     """
 
-    handler = logging.handlers.WatchedFileHandler(
-        os.environ.get("LOGFILE", "./daisybell.log"))
     formatter = logging.Formatter(logging.BASIC_FORMAT)
-    handler.setFormatter(formatter)
-    root_logger = logging.getLogger()
+    root_logger = logging.getLogger("daisybell")
     root_logger.setLevel(os.environ.get("LOGLEVEL", "INFO"))
-    root_logger.addHandler(handler)
 
     for scanner_class in ScannerRegistry.registered_scanners:
         scanner = scanner_class(root_logger)

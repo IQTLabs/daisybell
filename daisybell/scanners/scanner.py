@@ -22,9 +22,7 @@ class ScannerBase(metaclass=ScannerRegistry):
         self.logger = logger
 
     def can_scan(self, model: Pipeline) -> bool:
-        self.logger.warning('Base class can_scan should not be directly invoked')
-        return False
+        raise NotImplementedError('Base class can_scan should not be directly invoked')
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        self.logger.warning('Base class scan should not be directly invoked')
-        return None
+        raise NotImplementedError('Base class scan should not be directly invoked')
