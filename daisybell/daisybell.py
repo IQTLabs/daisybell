@@ -19,7 +19,6 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
         A (name, kind, description, {output}) tuple of all scanners that are applicable to the model.
     """
 
-    formatter = logging.Formatter(logging.BASIC_FORMAT)
     root_logger = logging.getLogger("daisybell")
     root_logger.setLevel(os.environ.get("LOGLEVEL", "INFO"))
 
