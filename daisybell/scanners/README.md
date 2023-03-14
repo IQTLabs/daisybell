@@ -1,5 +1,5 @@
 # Daisybell Scanners
-All scanners are implemented as plugins to the Diasybell system. The system maintains a registry of known local plugins and upon being called against a given [Pipeline](https://huggingface.co/docs/transformers/main_classes/pipelines) will iterate across all registered scanners. If a scanner is capable of scanning a given pipeline (typically based on it's type or task) then that scanner's `scan` method will be invoked and the results of said scan will be returned.
+All scanners are implemented as plugins to the Daisybell system. The system maintains a registry of known local plugins and upon being called against a given [Pipeline](https://huggingface.co/docs/transformers/main_classes/pipelines) will iterate across all registered scanners. If a scanner is capable of scanning a given pipeline (typically based on it's type or task) then that scanner's `scan` method will be invoked and the results of said scan will be returned.
 
 # Current Scanners
 ## MaskingLanguageBias
