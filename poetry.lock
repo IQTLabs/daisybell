@@ -589,13 +589,13 @@ files = [
 
 [[package]]
 name = "dataframe-image"
-version = "0.1.5"
+version = "0.1.7"
 description = "Embed pandas DataFrames as images in pdf and markdown files when converting from Jupyter Notebooks"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dataframe_image-0.1.5-py3-none-any.whl", hash = "sha256:f6c58ce54e83dc735193082ad6478f42183fccd10591a2bdbe8f4167051508fc"},
+    {file = "dataframe_image-0.1.7-py3-none-any.whl", hash = "sha256:404f5cab4346f5d05dd92e7d1246d3db4be8426862ede46dfa737c4509580b9b"},
 ]
 
 [package.dependencies]
