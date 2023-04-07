@@ -502,13 +502,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "dataframe-image"
-version = "0.1.9"
+version = "0.1.10"
 description = "Embed pandas DataFrames as images in pdf and markdown files when converting from Jupyter Notebooks"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dataframe_image-0.1.9-py3-none-any.whl", hash = "sha256:4cccef8bb388778d2de4aad63725445556d6b4beb66274b7896dabe2aed4f694"},
+    {file = "dataframe_image-0.1.10-py3-none-any.whl", hash = "sha256:51c2437cb1e5c1e4f7d43349a8805a14030934aaa0a8e3c5f6c09e14ddf5d740"},
 ]
 
 [package.dependencies]
