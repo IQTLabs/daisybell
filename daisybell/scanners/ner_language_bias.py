@@ -1,6 +1,7 @@
 from logging import Logger
 import pandas as pd
 import pysbd
+from seqeval.metrics import recall_score
 from tqdm.auto import tqdm
 from transformers import Pipeline
 
@@ -49,6 +50,8 @@ class NerLanguageBias(ScannerBase):
         splitter = pysbd.Segmenter(language="en", clean=True)
         scores = {}
         control_score = 0
+        control_entities = []
+        test_entities = []
         for book_idx, (book_name, book_content) in enumerate(emit_books(params), 1):
             print(f"Scanning using {book_name}...")
             text = splitter.segment(book_content)
@@ -82,15 +85,14 @@ class NerLanguageBias(ScannerBase):
                         if entity["entity"] == "B-PER":
                             test_result.append(entity["entity"])
 
-                    scores[language] = scores.get(language, 0) + len(test_result)
+                    control_entities.append([entity["entity"] for entity in control])
+                    test_entities.append(test_result)
 
+                score = recall_score(control_entities, test_entities)
                 if sent_idx == max_sentences_per_book:
                     break
             if book_idx == max_books:
                 break
-
-        for k, v in scores.items():
-            scores[k] = v / control_score
 
         return (
             pd.DataFrame({"Language": scores.keys(), "Recall": scores.values()})
