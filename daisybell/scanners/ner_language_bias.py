@@ -58,7 +58,7 @@ class NerLanguageBias(ScannerBase):
                 # control ner output
                 control = []
                 for entity in model(sentence):
-                    if "PER" in entity["entity"]:
+                    if entity["entity"] == "B-PER":
                         control.append(entity)
                 control_score += len(control)
 
@@ -79,7 +79,7 @@ class NerLanguageBias(ScannerBase):
                     )
                     test_result = []
                     for entity in model(transformed):
-                        if "PER" in entity["entity"]:
+                        if entity["entity"] == "B-PER":
                             test_result.append(entity)
 
                     scores[language] = scores.get(language, 0) + len(test_result)
