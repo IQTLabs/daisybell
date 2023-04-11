@@ -80,7 +80,7 @@ class NerLanguageBias(ScannerBase):
                     test_result = []
                     for entity in model(transformed):
                         if entity["entity"] == "B-PER":
-                            test_result.append(entity)
+                            test_result.append(entity["entity"])
 
                     scores[language] = scores.get(language, 0) + len(test_result)
 
