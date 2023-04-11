@@ -56,7 +56,12 @@ class NerLanguageBias(ScannerBase):
             print(f"Scanning using {book_name}...")
             text = splitter.segment(book_content)
             for sent_idx, sentence in enumerate(
-                tqdm(text, total=len(text), desc="Sentences", unit="sent")
+                tqdm(
+                    text,
+                    total=min(len(text), max_sentences_per_book),
+                    desc="Sentences",
+                    unit="sent",
+                )
             ):
                 # control ner output
                 control = []
