@@ -28,10 +28,7 @@ def test_scanning_zero_shot_human_bias():
 
 def test_scanning_ner_human_language_bias():
     res = scan(
-        pipeline(
-            model="Davlan/xlm-roberta-base-ner-hrl",
-            tokenizer="Davlan/xlm-roberta-base-ner-hrl",
-        ),
+        pipeline(model="Davlan/xlm-roberta-base-ner-hrl"),
         params={"max_books": 3, "max_sentences_per_book": 10},
     )
     name, kind, _, df = list(res)[0]
