@@ -70,7 +70,6 @@ class NerLanguageBias(ScannerBase):
                     if entity["entity"] == "B-PER":
                         control.append(entity)
                 control_entity = [entity["entity"] for entity in control]
-                print(f"==> Control entity: {control_entity}")
 
                 for language in language_names.keys():
                     transformed = replace_entities(
