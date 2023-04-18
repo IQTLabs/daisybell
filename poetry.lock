@@ -2320,7 +2320,7 @@ version = "2023.4.11"
 description = "Python type inferencer"
 category = "main"
 optional = true
-python-versions = "<3.11,>=3.7"
+python-versions = "<3.11, >=3.7"
 files = [
     {file = "pytype-2023.4.11-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:2079e3d1618f8b790ad0533445dfc5389c06b39378603b29fb1abbf2ac2d532b"},
     {file = "pytype-2023.4.11-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cb37bfb8fddf108359f89a6ae7560343561aa3e8cbc5d4445f6b766cd8971e2c"},
