@@ -1,0 +1,22 @@
+name: docker-test
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker build
+      run: |
+        cd docker
+      # docker build -f Dockerfile.base . -t iqtlabs/daisybell-base:latest
+      # docker build -f Dockerfile.airspyfm . -t iqtlabs/daisybell-airspyfm:latest
+      # docker build -f Dockerfile.mqtt . -t iqtlabs/daisybell-mqtt:latest
+        cd ..
+        docker build -f Dockerfile . -t iqtlabs/daisybell:latest
+        docker run -t iqtlabs/daisybell:latest daisybell-scan --help
+      # docker run -t iqtlabs/daisybell:latest daisybell-sigfinder --help
+        docker run -t iqtlabs/daisybell:latest daisybell-api --help
+        docker run -t iqtlabs/daisybell:latest daisybell-samples2raw --help
+        docker run -t iqtlabs/daisybell:latest daisybell-freqxlator --help
+        sudo apt-get update && sudo apt-get install -qy python3-pip
+      # docker compose -f orchestrator.yml -f worker.yml -f monitoring.yml -f specgram.yml build
