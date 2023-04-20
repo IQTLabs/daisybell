@@ -8,8 +8,4 @@ jobs:
     - name: docker build
       run: |
         docker build -f Dockerfile . -t iqtlabs/daisybell:latest
-        docker run -t iqtlabs/daisybell:latest daisybell-scan --help
-        docker run -t iqtlabs/daisybell:latest daisybell-api --help
-        docker run -t iqtlabs/daisybell:latest daisybell-samples2raw --help
-        docker run -t iqtlabs/daisybell:latest daisybell-freqxlator --help
-        sudo apt-get update && sudo apt-get install -qy python3-pip
+        docker run -t iqtlabs/daisybell:latest --help
