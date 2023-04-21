@@ -9,7 +9,6 @@ Dockerfile
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 LICENSE
-README.rst
 renovate.json
 
 # unit tests
