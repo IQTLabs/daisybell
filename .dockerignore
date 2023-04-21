@@ -1,0 +1,58 @@
+# Git
+.github
+.gitignore
+
+# Docker 
+Dockerfile
+
+# Documentation, etc. 
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+LICENSE
+renovate.json
+
+# unit tests
+tests/*
+
+# macOS stuff
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# environments 
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+.pre-commit-config.yaml
+__pypackages__/
+.pytype/ 
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+semgrep.out
