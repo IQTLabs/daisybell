@@ -4,7 +4,7 @@ version = "0.4.4-dev"
 description = "A scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently alpha."
 authors = ["Your Name <you@example.com>"]
 license = "Apache-2.0"
-# readme = "./daisybell/README.rst"
+readme = "README.rst"
 classifiers=[
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Development Status :: 3 - Alpha",
