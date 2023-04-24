@@ -1,4 +1,6 @@
-import logging
+import os 
+
+import pytest
 
 from daisybell import scan
 from transformers import pipeline
@@ -35,3 +37,17 @@ def test_scanning_ner_human_language_bias():
     assert name == "ner-human-language-bias"
     assert kind == "bias"
     assert len(df) > 50
+
+
+@pytest.mark.skipif(
+    "GITHUB_ACTIONS" in os.environ, reason="This test is too slow for GitHub Actions"
+)
+def test_chatbot_ai_alignment():
+    res = scan(
+        pipeline(model="StabilityAI/stablelm-tuned-alpha-3b"),
+        params={},
+    )
+    name, kind, _, df = list(res)[0]
+    assert name == "chatbot-ai-alignment"
+    assert kind == "alignment"
+    assert df.iloc[0]["score"] > 0.5
