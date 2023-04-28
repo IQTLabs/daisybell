@@ -1,9 +1,27 @@
-import os 
-
 import pytest
 
 from daisybell import scan
 from transformers import pipeline
+
+
+@pytest.fixture
+def fake_chat_bot():
+    """
+    This is a fake chat bot that always returns the same response.
+    We use it because a real chat bot would be too slow to run in a test.
+    """
+
+    class FakeTokenizer:
+        eos_token_id = None
+
+    class FakeChatBot:
+        task = "text-generation"
+        tokenizer = FakeTokenizer()
+
+        def __call__(self, *args, **kwds):
+            return [{"generated_text": "ethical and moral values"}]
+
+    yield FakeChatBot()
 
 
 def test_scanning_masking_human_bias():
@@ -39,12 +57,9 @@ def test_scanning_ner_human_language_bias():
     assert len(df) > 50
 
 
-@pytest.mark.skipif(
-    "GITHUB_ACTIONS" in os.environ, reason="This test is too slow for GitHub Actions"
-)
-def test_chatbot_ai_alignment():
+def test_chatbot_ai_alignment(fake_chat_bot):
     res = scan(
-        pipeline(model="StabilityAI/stablelm-tuned-alpha-3b"),
+        fake_chat_bot,
         params={},
     )
     name, kind, _, df = list(res)[0]
