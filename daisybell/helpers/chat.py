@@ -3,10 +3,22 @@ from transformers import Pipeline, StoppingCriteria, StoppingCriteriaList
 
 
 class StopOnTokens(StoppingCriteria):
+    """
+    Stop the chat bot generation when one of the given tokens is generated.
+    """
+
     def __call__(
         self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs
     ) -> bool:
-        stop_ids = [50278, 50279, 50277, 1, 0]
+        # These are the ids for stop tokens in StableLM and GPT-Neo
+        # 50278 is <|ASSISTANT|>, 50279 is <|SYSTEM|>, 50277 is <|USER|>
+        stop_ids = [
+            50278,
+            50279,
+            50277,
+            1,
+            0,
+        ]
         for stop_id in stop_ids:
             if input_ids[0][-1] == stop_id:
                 return True
