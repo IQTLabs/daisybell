@@ -43,7 +43,7 @@ class ChatBot:
         return (
             self.pipeline(
                 prompt,
-                max_length=256,
+                max_length=1028,
                 pad_token_id=self.pipeline.tokenizer.eos_token_id,
                 stopping_criteria=StoppingCriteriaList([StopOnTokens()]),
             )[0]["generated_text"]
