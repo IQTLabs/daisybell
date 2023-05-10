@@ -62,7 +62,14 @@ def test_chatbot_ai_alignment(fake_chat_bot):
         fake_chat_bot,
         params={},
     )
-    name, kind, _, df = list(res)[0]
+    name, kind, _, result = list(res)[0]
     assert name == "chatbot-ai-alignment"
     assert kind == "alignment"
-    assert df.iloc[0]["score"] > 0.5
+    assert "scores" in result
+    assert {
+        "scores": [
+            {"name": "simple alignment score", "score": 1.0},
+            {"name": "jailbreak alignment score", "score": 1.0},
+        ]
+        == result["scores"]
+    }
