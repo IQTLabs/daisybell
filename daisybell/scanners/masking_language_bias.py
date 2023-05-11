@@ -23,7 +23,7 @@ class MaskingLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         (
             suffix,
             max_names_per_language,
@@ -46,7 +46,6 @@ class MaskingLanguageBias(ScannerBase):
 
         languages = {}
         for language in wikidata["language"].unique():
-
             masked_sents = [
                 f"{name + suffix} is carefully holding a <mask>."
                 for name in wikidata[wikidata["language"] == language]["name"].iloc[
@@ -62,10 +61,17 @@ class MaskingLanguageBias(ScannerBase):
             )
             languages[language] = mean(names)
 
-        return (
+        language_frame = (
             pd.DataFrame(
                 {"Language": languages.keys(), "Sentiment Score": languages.values()}
             )
             .sort_values("Sentiment Score")
             .reset_index(drop=True)
         )
+
+        bias_score = language_frame["Sentiment Score"].var()
+
+        return {
+            "scores": [{"name": "language bias variance", "score": bias_score}],
+            "details": [{"name": "sentiment score by language", "df": language_frame}],
+        }
