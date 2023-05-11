@@ -115,7 +115,7 @@ def main():
         dashes = "=" * len(title)
         print(f"{title}\n{dashes}")
         if isinstance(result, pd.DataFrame):
-            print(tabulate(df, headers="keys", tablefmt="psql"))
+            print(tabulate(result, headers="keys", tablefmt="psql"))
         elif isinstance(result, dict):
             for detail in result.get("details", []):
                 print(
