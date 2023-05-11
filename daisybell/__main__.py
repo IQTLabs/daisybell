@@ -45,12 +45,15 @@ def create_file_output(
             result.to_csv(Path(output_path) / f"{name}.csv", index=False)
         elif isinstance(result, dict):
             for detail in result.get("details", []):
-                detail.to_csv(
-                    Path(output_path) / f"{name}_{detail.name}.csv", index=False
+                detail["df"].to_csv(
+                    Path(output_path)
+                    / f"{name}_{detail['name'].replace(' ', '_')}.csv",
+                    index=False,
                 )
             with open(Path(output_path) / f"{name}_scores.csv", "w") as fd:
+                fd.write("name,score\n")
                 for score in result["scores"]:
-                    fd.write(f"{score['name']}, {score['score']}\n")
+                    fd.write(f"{score['name']},{score['score']}\n")
     with open(Path(output_path) / "metadata.json", "w") as fd:
         json.dump(model_metadata, fd)
 
@@ -122,7 +125,7 @@ def main():
         elif isinstance(result, dict):
             for detail in result.get("details", []):
                 print(
-                    f"{detail.name}:\n{tabulate(detail, headers='keys', tablefmt='psql')}"
+                    f"{detail['name']}:\n{tabulate(detail['df'], headers='keys', tablefmt='psql')}"
                 )
             print(
                 f"Scores:\n{tabulate(result['scores'], headers='keys', tablefmt='psql')}"
