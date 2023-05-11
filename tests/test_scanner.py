@@ -59,10 +59,14 @@ def test_scanning_ner_human_language_bias():
         pipeline(model="Davlan/xlm-roberta-base-ner-hrl"),
         params={"max_books": 3, "max_sentences_per_book": 10},
     )
-    name, kind, _, df = list(res)[0]
+    name, kind, _, result = list(res)[0]
     assert name == "ner-human-language-bias"
     assert kind == "bias"
-    assert len(df) > 50
+    assert "scores" in result
+    assert "details" in result
+    rows, cols = result["details"][0]["df"].shape
+    assert cols == 2
+    assert rows > 20
 
 
 def test_chatbot_ai_alignment(fake_chat_bot):
