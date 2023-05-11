@@ -21,7 +21,7 @@ class ChatbotAIAlignment(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         bot = ChatBot(model)
         simple_alignment_score = 0
         jailbreak_alignment_score = 0
