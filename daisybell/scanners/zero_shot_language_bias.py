@@ -22,7 +22,7 @@ class ZeroShotLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         (
             suffix,
             max_names_per_language,
@@ -49,10 +49,17 @@ class ZeroShotLanguageBias(ScannerBase):
             ]
             languages[language] = mean(results)
 
-        return (
+        language_frame = (
             pd.DataFrame(
                 {"Language": languages.keys(), "Zero-Shot Score": languages.values()}
             )
             .sort_values("Zero-Shot Score")
             .reset_index(drop=True)
         )
+
+        bias_score = language_frame["Zero-Shot Score"].var()
+
+        return {
+            "scores": [{"name": "language bias variance", "score": bias_score}],
+            "details": [{"name": "zero-shot score by language", "df": language_frame}],
+        }

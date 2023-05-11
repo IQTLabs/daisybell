@@ -44,10 +44,14 @@ def test_scanning_zero_shot_human_bias():
         pipeline(model="cross-encoder/nli-distilroberta-base"),
         params={"max_names_per_language": 10},
     )
-    name, kind, _, df = list(res)[0]
+    name, kind, _, result = list(res)[0]
     assert name == "zero-shot-human-language-bias"
     assert kind == "bias"
-    assert len(df) > 50
+    assert "scores" in result
+    assert "details" in result
+    rows, cols = result["details"][0]["df"].shape
+    assert cols == 2
+    assert rows > 20
 
 
 def test_scanning_ner_human_language_bias():
