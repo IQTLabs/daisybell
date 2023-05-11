@@ -27,7 +27,7 @@ class NerLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         (
             suffix,
             max_names_per_language,
