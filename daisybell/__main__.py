@@ -2,12 +2,15 @@ from typing import Tuple, Dict, Any
 from os import PathLike
 from pathlib import Path
 import json
+import warnings
 from argparse import ArgumentParser
 from transformers import pipeline
 from tabulate import tabulate
 import pandas as pd
 
 from daisybell import scan
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def create_file_output(
