@@ -96,6 +96,12 @@ def main():
         default="cpu",
         help="device to use for scanning (default: cpu)",
     )
+    parser.add_argument(
+        "--score-only",
+        "-s",
+        action="store_true",
+        help="only output the scores of scanners to standard output, in comma-separated format",
+    )
 
     args = parser.parse_args()
     if args.params:
@@ -117,12 +123,17 @@ def main():
     print(f"Starting scan on model: {args.model}...")
     scan_output = list(scan(model, params))
     for name, kind, desc, result in scan_output:
-        title = f"Results of {kind} scannner: {name} ({desc})"
-        dashes = "=" * len(title)
-        print(f"{title}\n{dashes}")
+        if not args.score_only:
+            title = f"Results of {kind} scannner: {name} ({desc})"
+            dashes = "=" * len(title)
+            print(f"{title}\n{dashes}")
         if isinstance(result, pd.DataFrame):
             print(tabulate(result, headers="keys", tablefmt="psql"))
         elif isinstance(result, dict):
+            if args.score_only:
+                for score in result["scores"]:
+                    print(f"{name},{score['name']},{score['score']}")
+                continue
             for detail in result.get("details", []):
                 print(
                     f"{detail['name']}:\n{tabulate(detail['df'], headers='keys', tablefmt='psql')}"
