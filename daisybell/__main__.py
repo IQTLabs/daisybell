@@ -2,12 +2,15 @@ from typing import Tuple, Dict, Any
 from os import PathLike
 from pathlib import Path
 import json
+import warnings
 from argparse import ArgumentParser
 from transformers import pipeline
 from tabulate import tabulate
 import pandas as pd
 
 from daisybell import scan
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def create_file_output(
@@ -32,14 +35,25 @@ def create_file_output(
         model_metadata["params"] = model_params
     model_metadata["scanners"] = list()
 
-    for name, kind, desc, df in scan_output:
+    for name, kind, desc, result in scan_output:
         scan_metadata: Dict[str, Any] = dict()
         scan_metadata["name"] = name
         scan_metadata["kind"] = kind
         scan_metadata["description"] = desc
         model_metadata["scanners"].append(scan_metadata)
-        df.to_csv(Path(output_path) / f"{name}.csv", index=False)
-
+        if isinstance(result, pd.DataFrame):
+            result.to_csv(Path(output_path) / f"{name}.csv", index=False)
+        elif isinstance(result, dict):
+            for detail in result.get("details", []):
+                detail["df"].to_csv(
+                    Path(output_path)
+                    / f"{name}_{detail['name'].replace(' ', '_')}.csv",
+                    index=False,
+                )
+            with open(Path(output_path) / f"{name}_scores.csv", "w") as fd:
+                fd.write("name,score\n")
+                for score in result["scores"]:
+                    fd.write(f"{score['name']},{score['score']}\n")
     with open(Path(output_path) / "metadata.json", "w") as fd:
         json.dump(model_metadata, fd)
 
@@ -82,6 +96,12 @@ def main():
         default="cpu",
         help="device to use for scanning (default: cpu)",
     )
+    parser.add_argument(
+        "--score-only",
+        "-s",
+        action="store_true",
+        help="only output the scores of scanners to standard output, in comma-separated format",
+    )
 
     args = parser.parse_args()
     if args.params:
@@ -102,11 +122,25 @@ def main():
         model = pipeline(model=args.model, device=args.device)
     print(f"Starting scan on model: {args.model}...")
     scan_output = list(scan(model, params))
-    for name, kind, desc, df in scan_output:
-        title = f"Results of {kind} scannner: {name} ({desc})"
-        dashes = "=" * len(title)
-        print(f"{title}\n{dashes}")
-        print(tabulate(df, headers="keys", tablefmt="psql"))
+    for name, kind, desc, result in scan_output:
+        if not args.score_only:
+            title = f"Results of {kind} scannner: {name} ({desc})"
+            dashes = "=" * len(title)
+            print(f"{title}\n{dashes}")
+        if isinstance(result, pd.DataFrame):
+            print(tabulate(result, headers="keys", tablefmt="psql"))
+        elif isinstance(result, dict):
+            if args.score_only:
+                for score in result["scores"]:
+                    print(f"{name},{score['name']},{score['score']}")
+                continue
+            for detail in result.get("details", []):
+                print(
+                    f"{detail['name']}:\n{tabulate(detail['df'], headers='keys', tablefmt='psql')}"
+                )
+            print(
+                f"Scores:\n{tabulate(result['scores'], headers='keys', tablefmt='psql')}"
+            )
     if args.output:
         print(f"Saving output to {args.output}...")
         create_file_output(scan_output, args.output, args.model, args.params)

@@ -21,7 +21,7 @@ class ChatbotAIAlignment(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         bot = ChatBot(model)
         simple_alignment_score = 0
         jailbreak_alignment_score = 0
@@ -104,12 +104,15 @@ class ChatbotAIAlignment(ScannerBase):
                     jailbreak_alignment_score += 1
                     break
 
-        return pd.DataFrame(
-            {
-                "type": ["simple_alignment", "jailbreak_alignment"],
-                "score": [
-                    simple_alignment_score / len(simple_prompts),
-                    jailbreak_alignment_score / len(simple_prompts),
-                ],
-            }
-        )
+        return {
+            "scores": [
+                {
+                    "name": "simple alignment score",
+                    "score": simple_alignment_score / len(simple_prompts),
+                },
+                {
+                    "name": "jailbreak alignment score",
+                    "score": jailbreak_alignment_score / len(simple_prompts),
+                },
+            ]
+        }

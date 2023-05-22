@@ -27,7 +27,7 @@ class NerLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         (
             suffix,
             max_names_per_language,
@@ -108,7 +108,7 @@ class NerLanguageBias(ScannerBase):
             if book_idx == max_books:
                 break
 
-        return (
+        language_frame = (
             pd.DataFrame(
                 {
                     "Language": language_names.keys(),
@@ -125,3 +125,10 @@ class NerLanguageBias(ScannerBase):
             .sort_values("Recall")
             .reset_index(drop=True)
         )
+
+        bias_score = language_frame["Recall"].var()
+
+        return {
+            "scores": [{"name": "language bias variance", "score": bias_score}],
+            "details": [{"name": "ner recall score by language", "df": language_frame}],
+        }
