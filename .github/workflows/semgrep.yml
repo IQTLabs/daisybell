@@ -71,7 +71,7 @@ jobs:
         sudo apt install jq && \
         python3 -m pip install --upgrade pip && \
         python3 -m pip install semgrep && \
-        python3 -m pip install --upgrade urllib3==1.26 && \
+        python3 -m pip install --upgrade urllib3==1.26.16 && \
         mkdir -p /home/runner/reports/ && \
         cd ${GITHUB_WORKSPACE}/ && \
         semgrep --config=.github/workflows/config/semgrep-python.yml  --json -o /home/runner/reports/semgrep.out \
