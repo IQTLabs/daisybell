@@ -526,13 +526,13 @@ requests = "*"
 
 [[package]]
 name = "datasets"
-version = "2.13.0"
+version = "2.13.1"
 description = "HuggingFace community-driven open-source library of datasets"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "datasets-2.13.0-py3-none-any.whl", hash = "sha256:26671d474990ad8fd7388e8c67cde4d72f6c1f0e87af685fc09af5d9a5992274"},
-    {file = "datasets-2.13.0.tar.gz", hash = "sha256:b8c3bcf9c3d0c74f101c7645e42231de9f45206a2e742df15799da9bfa625608"},
+    {file = "datasets-2.13.1-py3-none-any.whl", hash = "sha256:844d8dbc1759e0b6b8e5063af019dc95d6af07ea075002b03323a280bf8d53f6"},
+    {file = "datasets-2.13.1.tar.gz", hash = "sha256:bacb7750b1a434417312b4281a55225a3f7e0163abdd12a2a3e2d700310d5221"},
 ]
 
 [package.dependencies]
