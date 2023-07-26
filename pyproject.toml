@@ -26,7 +26,7 @@ seqeval = "^1.2.2"
 datasets = "^2.13.1"
 tensorboard = "^2.13.0"
 pysbd = "^0.3.4"
-grpcio = "<1.56.1"
+grpcio = "<1.56.3"
 sentencepiece = "^0.1.97"
 protobuf = "^3.19.1"
 
