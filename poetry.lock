@@ -526,13 +526,13 @@ requests = "*"
 
 [[package]]
 name = "datasets"
-version = "2.14.3"
+version = "2.14.4"
 description = "HuggingFace community-driven open-source library of datasets"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "datasets-2.14.3-py3-none-any.whl", hash = "sha256:8da5868e55e7c1f0bf3356913a14a9926fe5eca66663691886b95bc9c9b065f0"},
-    {file = "datasets-2.14.3.tar.gz", hash = "sha256:5fb20465a990cf7946f961884ba46fec19cdc95b1cd2cad2a7b87c8d183b02e1"},
+    {file = "datasets-2.14.4-py3-none-any.whl", hash = "sha256:29336bd316a7d827ccd4da2236596279b20ca2ac78f64c04c9483da7cbc2459b"},
+    {file = "datasets-2.14.4.tar.gz", hash = "sha256:ef29c2b5841de488cd343cfc26ab979bff77efa4d2285af51f1ad7db5c46a83b"},
 ]
 
 [package.dependencies]
@@ -3630,4 +3630,4 @@ test = ["flake8", "pdbpp", "pytest", "pytest-cov", "pytype"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1 <3.11"
-content-hash = "6cb9f51e7ffa4a6b81ef21777c8e0b19ce3c8015fa1485670b59356ab3f1920e"
+content-hash = "b89fcf011ea179acc0a00bd738fbb4ca0155f9ec42256fa8680583afce19ac01"
