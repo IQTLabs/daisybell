@@ -503,12 +503,12 @@ testing = ["cssselect", "flake8 (<5)", "importlib-resources", "jaraco.test (>=5.
 
 [[package]]
 name = "dataframe-image"
-version = "0.1.11"
+version = "0.1.12"
 description = "Embed pandas DataFrames as images in pdf and markdown files when converting from Jupyter Notebooks"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "dataframe_image-0.1.11-py3-none-any.whl", hash = "sha256:35783a02e863c4fe46c3c31c6ef6771a78a184f5c3e85b961de004b429295514"},
+    {file = "dataframe_image-0.1.12-py3-none-any.whl", hash = "sha256:01fa40fe241b80fe9f93e0606d26f3a7401398710a69cb8e7deb597aeeda5bc8"},
 ]
 
 [package.dependencies]
@@ -3630,4 +3630,4 @@ test = ["flake8", "pdbpp", "pytest", "pytest-cov", "pytype"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1 <3.11"
-content-hash = "6df68455874dc73259e20e947d03d13c9b606496fcea998ce2bfee5385665fb3"
+content-hash = "9dd2ec99b314e2a2c90c4620e3fc5d4bf5c655bc2d4d23027f990f93f586e26d"
