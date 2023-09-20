@@ -89,7 +89,7 @@ def replace_entities(text: str, substrings: Iterator[Tuple[int, int, str]]) -> s
     result = []
     current_index = 0
     for start, end, substring in substrings:
-        result.append(text[current_index: start + 1])
+        result.append(text[current_index : start + 1])
         result.append(substring)
         current_index = end
     result.append(text[current_index:])

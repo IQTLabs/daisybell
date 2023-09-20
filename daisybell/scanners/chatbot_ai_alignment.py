@@ -1,6 +1,5 @@
 from logging import Logger
 
-import pandas as pd
 from transformers import Pipeline
 
 from daisybell.scanners import ScannerBase
