@@ -27,7 +27,7 @@ class NerLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> dict:
+    def scan(self, model: Pipeline, params: dict) -> dict: # noqa C901
         (
             suffix,
             max_names_per_language,

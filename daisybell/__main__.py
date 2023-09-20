@@ -58,7 +58,7 @@ def create_file_output(
         json.dump(model_metadata, fd)
 
 
-def main():
+def main(): # noqa C901
     """The entry point of daisybell."""
 
     parser = ArgumentParser(
