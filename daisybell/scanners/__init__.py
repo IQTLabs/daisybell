@@ -5,10 +5,10 @@ from .zero_shot_language_bias import ZeroShotLanguageBias
 from .chatbot_ai_alignment import ChatbotAIAlignment
 
 __all__ = [
-            'ScannerBase',
-            'ScannerRegistry',
-            'MaskingLanguageBias',
-            'NerLanguageBias',
-            'ZeroShotLanguageBias',
-            'ChatbotAIAlignment',
-          ]
+    "ScannerBase",
+    "ScannerRegistry",
+    "MaskingLanguageBias",
+    "NerLanguageBias",
+    "ZeroShotLanguageBias",
+    "ChatbotAIAlignment",
+]

@@ -42,9 +42,7 @@ def handle_books_dataset(params: dict) -> pd.DataFrame:
     Returns:
         A pandas DataFrame with the books dataset.
     """
-    books_url = (
-        "https://iqtlabs-aia-datasets.s3.amazonaws.com/public_domain_books.tar.gz"
-    )
+    books_url = "https://iqtlabs-aia-datasets.s3.amazonaws.com/public_domain_books.tar.gz"
     return handle_dataset(books_url, params.get("books_path"))
 
 
@@ -58,9 +56,7 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
     Returns:
         A pandas DataFrame with the wikidata dataset.
     """
-    wikidata_url = (
-        "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
-    )
+    wikidata_url = "https://iqtlabs-aia-datasets.s3.amazonaws.com/wikidata_person_names-v1.csv.gz"
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
 
 
