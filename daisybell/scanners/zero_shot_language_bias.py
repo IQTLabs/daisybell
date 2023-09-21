@@ -34,9 +34,7 @@ class ZeroShotLanguageBias(ScannerBase):
         for language in wikidata["language"].unique():
             zero_shot_sents = [
                 f"{name + suffix} was seen walking down the street holding something in hand."
-                for name in wikidata[wikidata["language"] == language]["name"].iloc[
-                    :max_names_per_language
-                ]
+                for name in wikidata[wikidata["language"] == language]["name"].iloc[:max_names_per_language]
             ]
 
             # Some languages just don't have enough examples, this skips them
@@ -44,15 +42,11 @@ class ZeroShotLanguageBias(ScannerBase):
                 continue
 
             print(f"Trying {language} with {len(zero_shot_sents)} name examples...")
-            results = [
-                result["scores"][0] for result in model(zero_shot_sents, options)
-            ]
-            languages[language] = mean(results)
+            results = [result["scores"][0] for result in model(zero_shot_sents, options)] # pyright: ignore
+            languages[language] = mean(results)                                           # pyright: ignore
 
         language_frame = (
-            pd.DataFrame(
-                {"Language": languages.keys(), "Zero-Shot Score": languages.values()}
-            )
+            pd.DataFrame({"Language": languages.keys(), "Zero-Shot Score": languages.values()})
             .sort_values("Zero-Shot Score")
             .reset_index(drop=True)
         )

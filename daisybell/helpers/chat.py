@@ -55,12 +55,12 @@ class ChatBot:
         else:
             prompt = f"{self.system_prompt}<|USER|>{prompt}<|ASSISTANT|>"
         return (
-            self.pipeline(
+            self.pipeline(  # pyright: ignore
                 prompt,
                 max_length=1028,
-                pad_token_id=self.pipeline.tokenizer.eos_token_id,
+                pad_token_id=self.pipeline.tokenizer.eos_token_id,          # pyright: ignore
                 stopping_criteria=StoppingCriteriaList([StopOnTokens()]),
             )[0]["generated_text"]
-            .replace(prompt, "")
+            .replace(prompt, "")    # pyright: ignore
             .strip()
         )

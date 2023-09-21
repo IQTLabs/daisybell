@@ -27,7 +27,7 @@ class NerLanguageBias(ScannerBase):
         except Exception:
             return False
 
-    def scan(self, model: Pipeline, params: dict) -> dict: # noqa C901
+    def scan(self, model: Pipeline, params: dict) -> dict:  # noqa C901
         (
             suffix,
             max_names_per_language,
@@ -40,9 +40,7 @@ class NerLanguageBias(ScannerBase):
         language_names = {}
         for language in wikidata["language"].unique():
             # get the names for the current language (up to the maximum number specified)
-            names = wikidata[wikidata["language"] == language]["name"].iloc[
-                :max_names_per_language
-            ]
+            names = wikidata[wikidata["language"] == language]["name"].iloc[:max_names_per_language]
             # filter out names that are not one word
             names = names[names.str.count(" ") == 0]
             # Some languages just don't have enough examples, this skips them
@@ -66,30 +64,29 @@ class NerLanguageBias(ScannerBase):
             ):
                 # control ner output
                 control = []
-                for entity in model(sentence):
-                    if entity["entity"] == "B-PER":
+                for entity in model(sentence):          # pyright: ignore
+                    if entity["entity"] == "B-PER":     # pyright: ignore
                         control.append(entity)
                 control_entity = [entity["entity"] for entity in control]
 
                 for language in language_names.keys():
                     transformed = replace_entities(
                         sentence,
-                        (
+                        (   # pyright: ignore
                             (
                                 entity["start"],
                                 entity["end"],
-                                language_names[language]
-                                .sample(random_state=18 + i)
-                                .item()
-                                + suffix,
+                                language_names[language].sample(random_state=18 + i).item() + suffix,
                             )
                             for i, entity in enumerate(control)
                         ),
                     )
                     test_result = []
-                    for entity in model(transformed):
-                        if entity["entity"] == "B-PER":
-                            test_result.append(entity["entity"])
+                    entities = model(transformed)
+                    if entities is not None:
+                        for entity in entities:
+                            if entity["entity"] == "B-PER": # pyright: ignore
+                                test_result.append(entity["entity"]) # pyright: ignore
 
                     new_control_entity = deepcopy(control_entity)
                     if len(control_entity) == 0 and len(test_result) == 0:
@@ -97,9 +94,7 @@ class NerLanguageBias(ScannerBase):
                     elif len(control_entity) > len(test_result):
                         test_result += ["O"] * (len(control_entity) - len(test_result))
                     elif len(control_entity) < len(test_result):
-                        new_control_entity += ["O"] * (
-                            len(test_result) - len(control_entity)
-                        )
+                        new_control_entity += ["O"] * (len(test_result) - len(control_entity))
                     control_entities[language].append(new_control_entity)
                     test_entities[language].append(test_result)
 

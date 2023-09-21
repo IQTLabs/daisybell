@@ -2,13 +2,13 @@ import json
 import os
 import tarfile
 from pathlib import Path
-from typing import Iterator, Tuple
+from typing import Optional, List, Iterator, Tuple
 from urllib.request import urlretrieve
 
 import pandas as pd
 
 
-def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
+def handle_dataset(url: str, alterative_path: Optional[str] = None) -> os.PathLike:
     """
     Handles the dataset.
 
@@ -32,7 +32,7 @@ def handle_dataset(url: str, alterative_path: str = None) -> os.PathLike:
     return output_path
 
 
-def handle_books_dataset(params: dict) -> pd.DataFrame:
+def handle_books_dataset(params: dict) -> os.PathLike:
     """
     Downloads the books dataset or provides the cached copy.
 
@@ -46,7 +46,7 @@ def handle_books_dataset(params: dict) -> pd.DataFrame:
     return handle_dataset(books_url, params.get("books_path"))
 
 
-def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
+def handle_wikidata_dataset(params: dict) -> os.PathLike:
     """
     Downloads the wikidata dataset or provides the cached copy.
 
@@ -60,7 +60,7 @@ def handle_wikidata_dataset(params: dict) -> pd.DataFrame:
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
 
 
-def emit_books(params: dict) -> Iterator[Tuple[str, str]]:
+def emit_books(params: dict) -> List[Tuple[str, str]]:
     """
     Emit the books in a tar file.
     books_path: The path to the tar file.
@@ -68,10 +68,10 @@ def emit_books(params: dict) -> Iterator[Tuple[str, str]]:
     """
     with tarfile.open(handle_books_dataset(params)) as tar:
         for member in tar.getmembers():
-            yield member.name, json.loads(tar.extractfile(member).read())[0]["content"]
+            yield member.name, json.loads(tar.extractfile(member).read())[0]["content"] # pyright: ignore
 
 
-def replace_entities(text: str, substrings: Iterator[Tuple[int, int, str]]) -> str:
+def replace_entities(text: str, substrings: List[Tuple[int, int, str]]) -> str:
     """
     Replace substrings in a string with a given replacement string.
     :param text: The string to replace substrings in.

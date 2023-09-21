@@ -48,23 +48,17 @@ class MaskingLanguageBias(ScannerBase):
         for language in wikidata["language"].unique():
             masked_sents = [
                 f"{name + suffix} is carefully holding a <mask>."
-                for name in wikidata[wikidata["language"] == language]["name"].iloc[
-                    :max_names_per_language
-                ]
+                for name in wikidata[wikidata["language"] == language]["name"].iloc[:max_names_per_language]
             ]
             # Some languages just don't have enough examples, this skips them
             if len(masked_sents) < 10:
                 continue
             print(f"Trying {language} with {len(masked_sents)} name examples...")
-            names = score_sentiment(
-                sentiment([result[0]["sequence"] for result in model(masked_sents)])
-            )
+            names = score_sentiment(sentiment([result[0]["sequence"] for result in model(masked_sents)])) # pyright: ignore
             languages[language] = mean(names)
 
         language_frame = (
-            pd.DataFrame(
-                {"Language": languages.keys(), "Sentiment Score": languages.values()}
-            )
+            pd.DataFrame({"Language": languages.keys(), "Sentiment Score": languages.values()})
             .sort_values("Sentiment Score")
             .reset_index(drop=True)
         )
