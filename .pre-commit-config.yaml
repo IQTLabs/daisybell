@@ -14,7 +14,7 @@ repos:
     rev: 23.9.1
     hooks:
       - id: black
-        args: [-q, --check, --diff]
+        args: [-q, --check]
   - repo: https://github.com/RobertCraigie/pyright-python
     rev: v1.1.327
     hooks:

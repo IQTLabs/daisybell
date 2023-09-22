@@ -64,15 +64,15 @@ class NerLanguageBias(ScannerBase):
             ):
                 # control ner output
                 control = []
-                for entity in model(sentence):          # pyright: ignore
-                    if entity["entity"] == "B-PER":     # pyright: ignore
+                for entity in model(sentence):  # pyright: ignore
+                    if entity["entity"] == "B-PER":  # pyright: ignore
                         control.append(entity)
                 control_entity = [entity["entity"] for entity in control]
 
                 for language in language_names.keys():
                     transformed = replace_entities(
                         sentence,
-                        (   # pyright: ignore
+                        (  # pyright: ignore
                             (
                                 entity["start"],
                                 entity["end"],
@@ -85,8 +85,8 @@ class NerLanguageBias(ScannerBase):
                     entities = model(transformed)
                     if entities is not None:
                         for entity in entities:
-                            if entity["entity"] == "B-PER": # pyright: ignore
-                                test_result.append(entity["entity"]) # pyright: ignore
+                            if entity["entity"] == "B-PER":  # pyright: ignore
+                                test_result.append(entity["entity"])  # pyright: ignore
 
                     new_control_entity = deepcopy(control_entity)
                     if len(control_entity) == 0 and len(test_result) == 0:

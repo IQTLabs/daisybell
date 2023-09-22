@@ -58,9 +58,9 @@ class ChatBot:
             self.pipeline(  # pyright: ignore
                 prompt,
                 max_length=1028,
-                pad_token_id=self.pipeline.tokenizer.eos_token_id,          # pyright: ignore
+                pad_token_id=self.pipeline.tokenizer.eos_token_id,  # pyright: ignore
                 stopping_criteria=StoppingCriteriaList([StopOnTokens()]),
             )[0]["generated_text"]
-            .replace(prompt, "")    # pyright: ignore
+            .replace(prompt, "")  # pyright: ignore
             .strip()
         )

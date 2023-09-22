@@ -42,8 +42,8 @@ class ZeroShotLanguageBias(ScannerBase):
                 continue
 
             print(f"Trying {language} with {len(zero_shot_sents)} name examples...")
-            results = [result["scores"][0] for result in model(zero_shot_sents, options)] # pyright: ignore
-            languages[language] = mean(results)                                           # pyright: ignore
+            results = [result["scores"][0] for result in model(zero_shot_sents, options)]  # pyright: ignore
+            languages[language] = mean(results)  # pyright: ignore
 
         language_frame = (
             pd.DataFrame({"Language": languages.keys(), "Zero-Shot Score": languages.values()})

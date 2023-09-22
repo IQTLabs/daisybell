@@ -2,10 +2,8 @@ import json
 import os
 import tarfile
 from pathlib import Path
-from typing import Optional, List, Iterator, Tuple
+from typing import Optional, List, Tuple
 from urllib.request import urlretrieve
-
-import pandas as pd
 
 
 def handle_dataset(url: str, alterative_path: Optional[str] = None) -> os.PathLike:
@@ -68,7 +66,7 @@ def emit_books(params: dict) -> List[Tuple[str, str]]:
     """
     with tarfile.open(handle_books_dataset(params)) as tar:
         for member in tar.getmembers():
-            yield member.name, json.loads(tar.extractfile(member).read())[0]["content"] # pyright: ignore
+            yield member.name, json.loads(tar.extractfile(member).read())[0]["content"]  # pyright: ignore
 
 
 def replace_entities(text: str, substrings: List[Tuple[int, int, str]]) -> str:

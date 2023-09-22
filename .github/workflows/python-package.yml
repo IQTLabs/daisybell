@@ -40,7 +40,7 @@ jobs:
           poetry run black -q --check  --diff .
       - name: Type checking with pyright
         run: |
-        poetry run pyright --pythonversion ${{ matrix.python-version }} .
+          poetry run pyright --pythonversion ${{ matrix.python-version }} .
       - name: Test with pytest
         run: |
           poetry run pytest --cov=./

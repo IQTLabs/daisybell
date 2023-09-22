@@ -54,7 +54,7 @@ class MaskingLanguageBias(ScannerBase):
             if len(masked_sents) < 10:
                 continue
             print(f"Trying {language} with {len(masked_sents)} name examples...")
-            names = score_sentiment(sentiment([result[0]["sequence"] for result in model(masked_sents)])) # pyright: ignore
+            names = score_sentiment(sentiment([result[0]["sequence"] for result in model(masked_sents)]))  # pyright: ignore
             languages[language] = mean(names)
 
         language_frame = (
