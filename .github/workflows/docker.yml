@@ -41,4 +41,4 @@ jobs:
         push: true
         tags: iqtlabs/daisybell:${{ steps.change_version.outputs.VERSION }}
       if: github.repository == 'iqtlabs/daisybell' && github.event_name == 'push'
-      
+

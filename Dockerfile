@@ -5,7 +5,7 @@ COPY poetry.lock .
 COPY README.rst .
 COPY ./daisybell ./daisybell
 RUN pip install poetry==1.4.1
-RUN apt-get update && apt-get upgrade -y 
+RUN apt-get update && apt-get upgrade -y
 RUN poetry config virtualenvs.create false
-RUN poetry install 
+RUN poetry install
 ENTRYPOINT ["daisybell"]

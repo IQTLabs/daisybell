@@ -36,8 +36,8 @@ We will infer the task(s) of model by default but to provide specific tasks to t
 
 Daisybell can even scan chatbot models like StableLM for AI safety and alignment issues:
 
-:: 
-    
+::
+
     daisybell StabilityAI/stablelm-tuned-alpha-3b -d cuda:0
 
 That's it for now. More will come.

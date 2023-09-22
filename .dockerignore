@@ -2,10 +2,10 @@
 .github
 .gitignore
 
-# Docker 
+# Docker
 Dockerfile
 
-# Documentation, etc. 
+# Documentation, etc.
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 LICENSE
@@ -22,7 +22,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# environments 
+# environments
 .env
 .venv
 env/
@@ -33,7 +33,7 @@ venv.bak/
 
 .pre-commit-config.yaml
 __pypackages__/
-.pytype/ 
+.pytype/
 
 # Distribution / packaging
 .Python

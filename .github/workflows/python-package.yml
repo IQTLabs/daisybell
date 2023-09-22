@@ -30,12 +30,17 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install -E test
-      - name: Lint with flake8
+      - name: Lint with ruff
         run: |
           # stop the build if linting fails
-          poetry run ruff check --exit-zero .
+          poetry run ruff check --respect-gitignore .
+      - name: Check style with Black
+        run: |
           # check for formatting errors
           poetry run black -q --check  --diff .
+      - name: Type checking with pyright
+        run: |
+        poetry run pyright --pythonversion ${{ matrix.python-version }} .
       - name: Test with pytest
         run: |
           poetry run pytest --cov=./
