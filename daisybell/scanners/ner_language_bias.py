@@ -83,9 +83,9 @@ class NerLanguageBias(ScannerBase):
                     )
                     test_result = []
                     entities = model(transformed)
-                    for entity in entities:                         # pyright: ignore
-                        if entity["entity"] == "B-PER":             # pyright: ignore
-                            test_result.append(entity["entity"])    # pyright: ignore
+                    for entity in entities:  # pyright: ignore
+                        if entity["entity"] == "B-PER":  # pyright: ignore
+                            test_result.append(entity["entity"])  # pyright: ignore
 
                     new_control_entity = deepcopy(control_entity)
                     if len(control_entity) == 0 and len(test_result) == 0:
