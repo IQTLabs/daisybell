@@ -41,5 +41,3 @@ pipeline: an instance of transformers.Pipeline
 params: a ditionary of parameters to be supplied to the pipeline
 **Returns:** a pandas DataFrame
 This method should encapsulate the desired test routine(s) to be run against the supplied pipeline and evaluated using the supplied params.
-
-TEST Commti
