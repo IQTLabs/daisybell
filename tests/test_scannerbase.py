@@ -6,12 +6,14 @@ from daisybell.scanners import ScannerBase, ScannerRegistry
 
 @pytest.fixture
 def invalid_scanner():
-
     class InvalidScanner(ScannerBase):
         def __init__(self, logger: logging.Logger):
-            super().__init__("InvalidScanner", "invalid",
-                             "Scanner to test for correct behavior to base class when dealing with improper inheitance",
-                             logger)
+            super().__init__(
+                "InvalidScanner",
+                "invalid",
+                "Scanner to test for correct behavior to base class when dealing with improper inheitance",
+                logger,
+            )
 
     logger = logging.getLogger("daisybell-test")
     invalid = InvalidScanner(logger)

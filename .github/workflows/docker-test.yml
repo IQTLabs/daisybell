@@ -9,4 +9,3 @@ jobs:
       run: |
         docker build -f Dockerfile . -t iqtlabs/daisybell:latest
         docker run -t iqtlabs/daisybell:latest --help
-        

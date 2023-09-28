@@ -1,8 +1,0 @@
-[flake8]
-per-file-ignores =
-    # imported but unused
-    __init__.py: F401,
-    tests/test_scanner.py: F401
-exclude = .git, .venv
-max-complexity = 10
-max_line_length = 127

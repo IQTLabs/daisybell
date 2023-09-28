@@ -10,7 +10,7 @@ class ScannerRegistry(type):
 
     def __init__(cls, name, bases, attrs):
         super().__init__(cls)
-        if name != 'ScannerBase':
+        if name != "ScannerBase":
             ScannerRegistry.registered_scanners.append(cls)
 
 
@@ -22,7 +22,7 @@ class ScannerBase(metaclass=ScannerRegistry):
         self.logger = logger
 
     def can_scan(self, model: Pipeline) -> bool:
-        raise NotImplementedError('Base class can_scan should not be directly invoked')
+        raise NotImplementedError("Base class can_scan should not be directly invoked")
 
     def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
-        raise NotImplementedError('Base class scan should not be directly invoked')
+        raise NotImplementedError("Base class scan should not be directly invoked")
