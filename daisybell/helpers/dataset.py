@@ -2,7 +2,7 @@ import json
 import os
 import tarfile
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import Generator, Optional, List, Tuple
 from urllib.request import urlretrieve
 
 
@@ -58,7 +58,7 @@ def handle_wikidata_dataset(params: dict) -> os.PathLike:
     return handle_dataset(wikidata_url, params.get("wikidata_person_names_path"))
 
 
-def emit_books(params: dict) -> List[Tuple[str, str]]:
+def emit_books(params: dict) -> Generator:
     """
     Emit the books in a tar file.
     books_path: The path to the tar file.
