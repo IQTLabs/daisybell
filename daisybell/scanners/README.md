@@ -5,19 +5,19 @@ All scanners are implemented as plugins to the Daisybell system. The system main
 ## MaskingLanguageBias
 **Kind:** bias
 **Tasks:** fill-mask
-**Description:** 
+**Description:**
 Scans for language bias in NLP masking models.
 
 ## NerLanguageBias
 **Kind:** bias
 **Tasks:** token-classification
-**Description:** 
+**Description:**
 Scans for language bias in NER based models. WARNING! THIS SCANNER IS EXPERIMENTAL.
 
 ## ZeroShotLanguageBias
 **Kind:** bias
 **Tasks:** zero-shot-classification
-**Description:** 
+**Description:**
 Scans for language bias in NLP zero shot models.
 
 # Adding new Scanners
@@ -30,14 +30,14 @@ This method will initialize any values that need to be set for the class to exec
 If this call is not made then the scanner will not be added to the `ScannerRegistry` and will not be called by subsequent `daisybell` scans.
 
 ### `can_scan`
-**Parameters:** 
+**Parameters:**
 pipeline: an instance of transformers.Pipeline
 **Returns:** bool
 This method should return True if the `scan` method is applicable to the supplied Pipeline, otherwise False
 
 ### `scan`
-**Parameters:** 
+**Parameters:**
 pipeline: an instance of transformers.Pipeline
 params: a ditionary of parameters to be supplied to the pipeline
 **Returns:** a pandas DataFrame
-This method should encapsulate the desired test routine(s) to be run against the supplied pipeline and evaluated using the supplied params. 
+This method should encapsulate the desired test routine(s) to be run against the supplied pipeline and evaluated using the supplied params.

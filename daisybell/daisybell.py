@@ -25,6 +25,4 @@ def scan(model: Pipeline, params: dict = {}) -> Generator:
     for scanner_class in ScannerRegistry.registered_scanners:
         scanner = scanner_class(root_logger)
         if scanner.can_scan(model):
-            yield scanner.name, scanner.kind, scanner.description, scanner.scan(
-                model, params
-            )
+            yield scanner.name, scanner.kind, scanner.description, scanner.scan(model, params)

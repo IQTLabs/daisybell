@@ -1,4 +1,4 @@
-from typing import Tuple, Dict, Any
+from typing import Union, Tuple, Optional, List, Dict, Any
 from os import PathLike
 from pathlib import Path
 import json
@@ -14,10 +14,10 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def create_file_output(
-    scan_output: Tuple[str, str, str, pd.DataFrame],
+    scan_output: Union[Tuple[str, str, str, pd.DataFrame], List[Any]],
     output_path: PathLike,
     model_name: str,
-    model_params: dict = None,
+    model_params: Optional[dict] = None,
 ):
     """
     Creates scanner output as human and machine readable files.
@@ -46,8 +46,7 @@ def create_file_output(
         elif isinstance(result, dict):
             for detail in result.get("details", []):
                 detail["df"].to_csv(
-                    Path(output_path)
-                    / f"{name}_{detail['name'].replace(' ', '_')}.csv",
+                    Path(output_path) / f"{name}_{detail['name'].replace(' ', '_')}.csv",
                     index=False,
                 )
             with open(Path(output_path) / f"{name}_scores.csv", "w") as fd:
@@ -58,18 +57,12 @@ def create_file_output(
         json.dump(model_metadata, fd)
 
 
-def main():
+def main():  # noqa C901
     """The entry point of daisybell."""
 
-    parser = ArgumentParser(
-        description="Scans machine learning models for AI Assurance problems"
-    )
-    parser.add_argument(
-        "model", action="store", help="name of HuggingFace model to scan"
-    )
-    parser.add_argument(
-        "--task", "-t", action="store", help="what HuggingFace task to try"
-    )
+    parser = ArgumentParser(description="Scans machine learning models for AI Assurance problems")
+    parser.add_argument("model", action="store", help="name of HuggingFace model to scan")
+    parser.add_argument("--task", "-t", action="store", help="what HuggingFace task to try")
     parser.add_argument(
         "--params",
         "-p",
@@ -135,12 +128,8 @@ def main():
                     print(f"{name},{score['name']},{score['score']}")
                 continue
             for detail in result.get("details", []):
-                print(
-                    f"{detail['name']}:\n{tabulate(detail['df'], headers='keys', tablefmt='psql')}"
-                )
-            print(
-                f"Scores:\n{tabulate(result['scores'], headers='keys', tablefmt='psql')}"
-            )
+                print(f"{detail['name']}:\n{tabulate(detail['df'], headers='keys', tablefmt='psql')}")
+            print(f"Scores:\n{tabulate(result['scores'], headers='keys', tablefmt='psql')}")
     if args.output:
         print(f"Saving output to {args.output}...")
         create_file_output(scan_output, args.output, args.model, args.params)

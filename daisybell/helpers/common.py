@@ -24,7 +24,5 @@ def handle_common_params_to_masking_and_zeroshot(
     if params.get("max_names_per_language"):
         max_names_per_language = params["max_names_per_language"]
     else:
-        max_names_per_language = (
-            999999999  # If this number is exceeded we got bigger problems
-        )
+        max_names_per_language = 999999999  # If this number is exceeded we got bigger problems
     return suffix, max_names_per_language, pd.read_csv(handle_wikidata_dataset(params))
