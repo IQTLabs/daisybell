@@ -33,7 +33,7 @@ grpcio = "<1.59.1"
 sentencepiece = "^0.1.97"
 protobuf = "^4.23.2"
 
-pytest = { version = "7.4.2", optional = true, extras = ["test"] }
+pytest = { version = "7.4.3", optional = true, extras = ["test"] }
 pytest-cov = { version = "4.1.0", optional = true, extras = ["test"] }
 pdbpp = {version = "^0.10.3", optional = true, extras = ["test"]}
 ruff = {version = "^0.1.1", optional = true, extras = ["test"]}
