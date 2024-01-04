@@ -3804,4 +3804,4 @@ test = ["black", "pdbpp", "pyright", "pytest", "pytest-cov", "ruff"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.13"
-content-hash = "906b56ae10f6da3b4cea1c95bba34a1d90d82eecc14137bb106f0eb2c000ef75"
+content-hash = "9e75b5d8ccc0ca1bb4f1c84fb14d2342813245b8b1301a4a83a92e964a48dfca"
