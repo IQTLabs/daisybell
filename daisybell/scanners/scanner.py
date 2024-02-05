@@ -1,7 +1,6 @@
 from logging import Logger
 from typing import List
 
-import pandas as pd
 from transformers import Pipeline
 
 
@@ -24,5 +23,5 @@ class ScannerBase(metaclass=ScannerRegistry):
     def can_scan(self, model: Pipeline) -> bool:
         raise NotImplementedError("Base class can_scan should not be directly invoked")
 
-    def scan(self, model: Pipeline, params: dict) -> pd.DataFrame:
+    def scan(self, model: Pipeline, params: dict) -> dict:
         raise NotImplementedError("Base class scan should not be directly invoked")
