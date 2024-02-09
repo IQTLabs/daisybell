@@ -19,26 +19,26 @@ in-project = true
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.13"
-torch = "2.2.0"
-transformers = "^4.37.2"
+torch = "2.1.2"
+transformers = "^4.36.2"
 pandas = "^2.0.2"
 tabulate = "^0.9.0"
-types-tabulate = "^0.9.0.20240106"
+types-tabulate = "^0.9.0.3"
 dataframe-image = "^0.2.2"
 seqeval = "^1.2.2"
 datasets = "^2.16.1"
 tensorboard = "^2.13.0"
 pysbd = "^0.3.4"
-grpcio = "<1.60.2"
+grpcio = "<1.60.1"
 sentencepiece = "^0.1.97"
-protobuf = "^4.25.2"
+protobuf = "^4.25.1"
 
-pytest = { version = "8.0.0", optional = true, extras = ["test"] }
+pytest = { version = "7.4.4", optional = true, extras = ["test"] }
 pytest-cov = { version = "4.1.0", optional = true, extras = ["test"] }
 pdbpp = {version = "^0.10.3", optional = true, extras = ["test"]}
-ruff = {version = "^0.2.0", optional = true, extras = ["test"]}
-black = {version = "^24.1.1", optional = true, extras = ["test"]}
-pyright = {version = "^1.1.349", optional = true, extras = ["test"]}
+ruff = {version = "^0.1.6", optional = true, extras = ["test"]}
+black = {version = "^23.12.1", optional = true, extras = ["test"]}
+pyright = {version = "^1.1.333", optional = true, extras = ["test"]}
 
 [tool.poetry.extras]
 test = [
