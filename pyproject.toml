@@ -38,7 +38,7 @@ pytest-cov = { version = "5.0.0", optional = true, extras = ["test"] }
 pdbpp = {version = "^0.10.3", optional = true, extras = ["test"]}
 ruff = {version = "^0.3.4", optional = true, extras = ["test"]}
 black = {version = "^24.3.0", optional = true, extras = ["test"]}
-pyright = {version = "^1.1.356", optional = true, extras = ["test"]}
+pyright = {version = "^1.1.357", optional = true, extras = ["test"]}
 
 [tool.poetry.extras]
 test = [
