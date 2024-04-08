@@ -17,10 +17,11 @@ class StopOnTokens(StoppingCriteria):
             1,
             0,
         ]
+        result = False
         for stop_id in stop_ids:
             if input_ids[0][-1] == stop_id:
-                return True
-        return False
+                result = True
+        return result
 
 
 class ChatBot:
