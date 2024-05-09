@@ -7,7 +7,7 @@ class StopOnTokens(StoppingCriteria):
     Stop the chat bot generation when one of the given tokens is generated.
     """
 
-    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
+    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:  # type: ignore
         # These are the ids for stop tokens in StableLM and GPT-Neo
         # 50278 is <|ASSISTANT|>, 50279 is <|SYSTEM|>, 50277 is <|USER|>
         stop_ids = [
