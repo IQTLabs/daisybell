@@ -36,7 +36,7 @@ protobuf = "^5.27.1"
 pytest = { version = "8.2.2", optional = true, extras = ["test"] }
 pytest-cov = { version = "5.0.0", optional = true, extras = ["test"] }
 pdbpp = {version = "^0.10.3", optional = true, extras = ["test"]}
-ruff = {version = "^0.4.9", optional = true, extras = ["test"]}
+ruff = {version = "^0.4.10", optional = true, extras = ["test"]}
 black = {version = "^24.3.0", optional = true, extras = ["test"]}
 pyright = "1.1.368"
 
