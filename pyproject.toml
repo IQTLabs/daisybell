@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "daisybell"
-version = "0.4.4"
+version = "0.4.5-dev"
 description = "A scanner that will scan your AI models for problems. Currently it focuses on bias testing. It is currently alpha."
 authors = ["Your Name <you@example.com>"]
 license = "Apache-2.0"
