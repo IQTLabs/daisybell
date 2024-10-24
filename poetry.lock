@@ -553,16 +553,16 @@ testing = ["cssselect", "importlib-resources", "jaraco.test (>=5.1)", "lxml", "p
 
 [[package]]
 name = "dataframe-image"
-version = "0.2.4"
+version = "0.2.6"
 description = "Embed pandas DataFrames as images in pdf and markdown files when converting from Jupyter Notebooks"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dataframe_image-0.2.4-py3-none-any.whl", hash = "sha256:4dfe1ecd1827febdd57208ee9f88e93245fad40aa9bdd4b8363b45f7fa9aa576"},
+    {file = "dataframe_image-0.2.6-py3-none-any.whl", hash = "sha256:c4ab8dced60976efddd13c3be51c2f9929816fc1e547e29443729a2fdce22150"},
 ]
 
 [package.dependencies]
-aiohttp = "*"
+aiohttp = ">=3.10.2"
 beautifulsoup4 = "*"
 cssselect = "*"
 cssutils = "*"
