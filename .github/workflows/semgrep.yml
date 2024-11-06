@@ -98,7 +98,7 @@ jobs:
 
           core.setFailed('Semgrep found errors in Python files. Please check the uploaded report');
     - name: Upload scan reports
-      uses: actions/upload-artifact@v4.4.0
+      uses: actions/upload-artifact@v4.4.3
       if: failure()
       with:
         name: semgrep-python-report
