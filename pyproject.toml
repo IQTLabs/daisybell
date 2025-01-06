@@ -18,7 +18,7 @@ classifiers=[
 in-project = true
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
+python = ">=3.13,<3.14"
 torch = "2.4.1"
 transformers = "^4.42.3"
 pandas = "^2.0.2"
